@@ -8,7 +8,7 @@
 
 #import "CGCViewController.h"
 
-@interface CGCViewController ()
+@interface CGCViewController () <UIAlertViewDelegate>
 
 @end
 
@@ -16,6 +16,8 @@
 
 @synthesize wordList;
 @synthesize atLastWord;
+
+#define INAPP 5
 
 - (void)viewDidLoad
 {
@@ -29,7 +31,18 @@
 {
     self.arrayOfDrawings = [NSMutableArray array];
     self.wordListTracker = 0;
+    
     [self getWords:self];
+    NSLog(@"Before Alert View");
+    if (wordList.count <= 0)
+    {
+        NSLog(@"Alert View");
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Your word bank is empty!" message:@"Add more words you're making the kittens cry" delegate:self cancelButtonTitle:@"Fetch!" otherButtonTitles:nil];
+        alertView.tag = INAPP;
+        [alertView show];
+        return;
+    }
+    
     self.definition.text = [wordList[self.wordListTracker] valueForKey:@"english"];
     self.oldDrawing.image = nil;
     self.correctOldDrawing.text = @"";
@@ -37,6 +50,14 @@
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Menu" style:UIBarButtonItemStyleBordered target:self.navigationController action:@selector(toggleMenu)];
 
+}
+
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (alertView.tag == INAPP)
+    {
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -115,20 +136,14 @@
 
 - (IBAction)storeImage:(id)sender {
     
+    NSLog(@"WordListTracker is %i and WordList count is %i", self.wordListTracker, self.wordList.count);
+    
     if (self.wordListTracker > self.wordList.count-1)
     {
         [self.navigationController popViewControllerAnimated:YES];
         return;
     }
-    else if (self.wordListTracker == self.wordList.count-1)
-    {
-        self.oldDrawing.image = self.arrayOfDrawings[self.wordListTracker-1];
-        self.correctOldDrawing.text = [self.wordList[self.wordListTracker-1] valueForKey:@"chinese"];
-        self.imageView.image = nil;
-        self.wordListTracker++;
-        atLastWord = YES;
-    }
-    else if (self.wordListTracker < self.wordList.count-1)
+    else if (self.wordListTracker <= self.wordList.count-1)
     {
         NSLog(@"Hit!");
         UIImage *mostRecentImage = self.imageView.image;
@@ -140,7 +155,17 @@
         self.imageView.image = nil;
         [self.arrayOfDrawings addObject:mostRecentImage];
         self.wordListTracker ++;
-        self.definition.text = [wordList[self.wordListTracker] valueForKey:@"english"];
+        
+        if (self.wordListTracker < self.wordList.count) {
+            self.definition.text = [wordList[self.wordListTracker] valueForKey:@"english"];
+        }
+        else {
+            self.definition.text = @"";
+            self.infoDescription.text = @"DONE DRAWING!";
+            atLastWord = YES;
+
+        }
+        
         self.oldDrawing.image = self.arrayOfDrawings[self.wordListTracker-1];
         self.correctOldDrawing.text = [self.wordList[self.wordListTracker-1] valueForKey:@"chinese"];
     }

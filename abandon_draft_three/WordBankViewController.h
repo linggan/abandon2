@@ -14,8 +14,8 @@
 #import "ModalViewDelegate.h"
 
 
-@interface WordBankViewController : UIViewController <UIScrollViewDelegate, ModalViewDelegate>
-@property (nonatomic, retain) NSArray *wordList;
+@interface WordBankViewController : UIViewController <UIScrollViewDelegate, ModalViewDelegate, CharacterInfoViewControllerDelegate>
+@property (nonatomic, retain) NSMutableArray *wordList;
 @property (nonatomic, retain) id<CoreDataDelegate> dataDelegate;
 
 

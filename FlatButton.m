@@ -27,6 +27,7 @@
     [newBtn setTitle:text forState:UIControlStateNormal];
     [newBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [newBtn setBackgroundColor:color];
+    [newBtn setShowsTouchWhenHighlighted:YES];
     
     return newBtn;
 }

@@ -40,21 +40,24 @@
     
     for (id word in _wordList){
         NSString *hanzi = [word valueForKey:@"chinese"];
-        CharacterGridBox *wordTile = [[CharacterGridBox alloc]initWithFrame: CGRectMake(0, 0, 26.65*(hanzi.length), 44)AndCharacter:hanzi];
-        [[grid boxes] addObject:wordTile];
         
-        wordTile.onTap = ^{
-            if (!wordTile.selected){
-                [wordTile setSelected:TRUE];
-                [[wordTile characterBoxText] setTextColor:[UIColor grayColor]];
-                [[self vocabList] addObject:word];
-            }
-            else{
-                [wordTile setSelected:FALSE];
-                [[wordTile characterBoxText] setTextColor:[UIColor whiteColor]];
-                [[self vocabList] removeObject:word];
-            }
-        };
+        if([word valueForKey:@"englishRecording"] != nil){
+            CharacterGridBox *wordTile = [[CharacterGridBox alloc]initWithFrame: CGRectMake(0, 0, 53.3*ceil((double)hanzi.length/2), 44)AndCharacter:hanzi];
+            [[grid boxes] addObject:wordTile];
+            
+            wordTile.onTap = ^{
+                if (!wordTile.selected){
+                    [wordTile setSelected:TRUE];
+                    [[wordTile characterBoxText] setTextColor:[UIColor grayColor]];
+                    [[self vocabList] addObject:word];
+                }
+                else{
+                    [wordTile setSelected:FALSE];
+                    [[wordTile characterBoxText] setTextColor:[UIColor whiteColor]];
+                    [[self vocabList] removeObject:word];
+                }
+            };
+        }
     }
     
     [grid layoutWithSpeed:0.3 completion:nil];
@@ -87,15 +90,12 @@
 
 - (void)didSelectDone
 {
-    NSLog(@"here are the words: %@", [_vocabList valueForKey:@"pinyin"]);
     AVMutableComposition *composition = [[AVMutableComposition alloc] init];
     
     NSString *output = [[NSHomeDirectory() stringByAppendingString:@"/Documents/"] stringByAppendingString:[NSString stringWithFormat:@"%@.m4a", _vocabListName]];
     CMTime currentTrackTime = kCMTimeZero;
     
-    for (id word in _vocabList){
-        NSLog(@"here are the words: %@", [word valueForKey:@"pinyin"]);
-        
+    for (id word in _vocabList){        
         AVURLAsset *chineseTrack = [AVURLAsset URLAssetWithURL:[NSURL fileURLWithPath:[word valueForKey:@"chineseRecording"]] options:nil];
         AVURLAsset *englishTrack = [AVURLAsset URLAssetWithURL:[NSURL fileURLWithPath:[word valueForKey:@"englishRecording"]] options:nil];
         

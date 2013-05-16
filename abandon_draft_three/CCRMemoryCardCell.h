@@ -20,6 +20,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *pronunciation;
 
 @property (strong, nonatomic) AVAudioPlayer *audioPlayer;
+@property (strong, nonatomic) AVAudioPlayer *audioPlayer2;
 
 @property (nonatomic, strong) UIImage *frontOfCard;
 @property (nonatomic, strong) UIImage *backOfCard;
@@ -42,5 +43,7 @@
 
 -(NSObject*)getStoredClass;
 -(NSInteger)getCardType;
+
+-(void)playRecording;
 
 @end

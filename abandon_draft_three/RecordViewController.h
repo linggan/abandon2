@@ -9,11 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <AVFoundation/AVFoundation.h>
 #import "CoreDataDelegate.h"
-
-@protocol RecordViewControllerDelegate <NSObject>
--(void)deleteWordFromQueue:(NSString *)Word;
--(void)storeAAC:(NSString *)URL ForWord:(NSString *)Word InLanguage:(NSString *)Language;
-@end
+#import "ModalViewDelegate.h"
 
 @interface RecordViewController : UIViewController
 <AVAudioRecorderDelegate, UIAlertViewDelegate>
@@ -32,6 +28,8 @@
 
 
 @property (nonatomic, assign) id<CoreDataDelegate> dataDelegate;
+@property (nonatomic, assign) id<ModalViewDelegate> modalDelegate;
+
 
 - (IBAction)Record:(id)sender;
 @end

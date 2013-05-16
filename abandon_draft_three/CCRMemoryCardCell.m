@@ -31,10 +31,7 @@
         [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromRight forView:self cache:NO];
         [UIView setAnimationDuration:FLIP_TIME];
         [UIView setAnimationDelegate:self];
-        if (self.cardType == 0)
-        {
-            [UIView setAnimationDidStopSelector:@selector(playRecordedChineseSound)];
-        }
+        [self playRecording];
         [self playCardFlipSound];
         
         //Writes the info on the card
@@ -54,6 +51,7 @@
         [UIView setAnimationDuration:FLIP_TIME];
         [UIView setAnimationDelegate:self];
         [self playCardFlipSound];
+        [self.audioPlayer2 stop];
         
         [self clearData]; //Deletes info
         
@@ -63,6 +61,11 @@
 
 -(void)syncLastCardFlipped:(NSNotification *)notification
 {
+    if ([[notification object] getStoredClass] != self.storedClass)
+    {
+        [self.audioPlayer2 stop];
+    }
+    
     if (self.prevCardType == 2)
     {
         self.prevCardType = [[notification object] getCardType];
@@ -182,6 +185,7 @@
     [UIView setAnimationTransition:UIViewAnimationOptionCurveLinear forView:self cache:NO];
     [UIView setAnimationDuration:FLY_TIME];
     [UIView setAnimationDelegate:self];
+    [self.audioPlayer2 stop];
         
     [self setCenter:animateToPoint];
     [UIView commitAnimations];
@@ -219,7 +223,32 @@
     NSURL *url = [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@/FlipCard.wav", [[NSBundle mainBundle] resourcePath]]];
     NSError *error = nil;
     self.audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:&error];
+    self.audioPlayer.volume = 0.1;
     [self.audioPlayer play];
+}
+
+-(void)playRecording
+{
+    NSURL *url;
+    
+    if (self.cardType==0) {
+        if ([self.storedClass valueForKey:@"chineseRecording"] != nil) {
+            url = [NSURL fileURLWithPath:[self.storedClass valueForKey:@"chineseRecording"]];
+        }
+    }
+    else {
+        if ([self.storedClass valueForKey:@"englishRecording"] != nil) {
+            url = [NSURL fileURLWithPath:[self.storedClass valueForKey:@"englishRecording"]];
+        }
+    }
+    
+    if (url!=nil)
+    {
+        NSError *error = nil;
+        self.audioPlayer2 = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:&error];
+        self.audioPlayer2.volume = 1.0;
+        [self.audioPlayer2 play];
+    }
 }
 
 /*

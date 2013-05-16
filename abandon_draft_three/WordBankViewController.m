@@ -32,17 +32,17 @@
     
     for (id word in _wordList){
         NSString *hanzi = [word valueForKey:@"chinese"];
-        NSArray *wordArray = @[[word valueForKey:@"chinese"], [word valueForKey:@"pinyin"], [word valueForKey:@"english"]];
+        //NSArray *wordArray = @[[word valueForKey:@"chinese"], [word valueForKey:@"pinyin"], [word valueForKey:@"english"], [word valueForKey:@"firstDecomp"], [word valueForKey:@"secondDecomp"]];
         CharacterGridBox *wordTile = [[CharacterGridBox alloc]initWithFrame: CGRectMake(0, 0, 53.3*ceil((double)hanzi.length/2), 44)AndCharacter:hanzi];
         [[grid boxes] addObject:wordTile];
         
         wordTile.onTap = ^{
             CharacterInfoViewController *viewController = [[CharacterInfoViewController alloc]init];
-            [viewController setWord:wordArray];
+            [viewController setWord:word];
             viewController.modalDelegate = self;
-            viewController.modalPresentationStyle = UIModalTransitionStyleFlipHorizontal;
+            viewController.dataDelegate = self.dataDelegate;
+            viewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
             [self presentViewController:viewController animated:YES completion:NULL];
-            
         };
         
     }
@@ -56,7 +56,7 @@
 }
 
 -(void)getWords:(id)ViewController{
-    _wordList = [[self dataDelegate] getAllWords];
+    _wordList = [[[self dataDelegate] getAllWords] mutableCopy];
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
@@ -73,6 +73,12 @@
 - (void)didDismissPresentedViewController
 {
     [self dismissViewControllerAnimated:YES completion:NULL];
+}
+
+-(void)didDeleteWord: (NSManagedObject *)word{
+    [[self view] setNeedsDisplay];
+    [_wordList removeObject:word];
+
 }
 
 @end

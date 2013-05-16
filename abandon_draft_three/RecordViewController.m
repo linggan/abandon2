@@ -8,7 +8,7 @@
 // lot of this code for recording was taken from stackoverflow:http://stackoverflow.com/questions/1010343/how-do-i-record-audio-on-iphone-with-avaudiorecorder/1011273#1011273
 // also some from this repo on  github: https://github.com/rpplusplus/iOSMp3Recorder
 
-
+//NOTE, WORDLIST IS NOT SET WITH THIS. VIEW CONTROLLER CALLING THIS MUST SET WORDLIST.
 #import "recordViewController.h"
 #define DOCUMENTS_FOLDER [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"]
 
@@ -30,10 +30,7 @@
     }
     [self setTimesPressed:0];
     [self setCurrentIndex:0];
-    [self getWordsFromQueue:self];
-    
-    NSLog(@"here are words: %@", _wordList);
-    
+        
     if ([_wordList count]<1){
         [[[UIAlertView alloc]
           initWithTitle:@"No words"
@@ -143,12 +140,6 @@
     _duration.text = [NSString stringWithFormat:@"%.2d:%.2d", m, s];
 }
 
-
--(void)getWordsFromQueue:(id)ViewController{
-    _wordList = [[self dataDelegate] getAllUnrecordedWordsinQueue];
-    
-}
-
 -(void)deleteWordFromQueue:(NSString *)Word{
     [[self dataDelegate] deleteWordFromQueue:Word];
 }
@@ -163,6 +154,10 @@
     if (buttonIndex == 0) {
         [[self navigationController] popViewControllerAnimated:YES];
     }
+}
+
+- (void)didSelectDone:(id)sender {
+    [self.modalDelegate didDismissPresentedViewController];
 }
 
 @end

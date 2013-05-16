@@ -24,7 +24,6 @@
         [[_characterBoxText layer] setMasksToBounds:YES];
         [[_characterBoxText layer] setBorderWidth:1.0f];
         [[_characterBoxText layer] setBorderColor:[UIColor grayColor].CGColor];
-        //[[_characterBoxText layer] setCornerRadius:13.0f];
 
         [self addSubview:_characterBoxText];
         [self setSelected:false];

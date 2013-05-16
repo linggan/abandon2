@@ -13,9 +13,12 @@
 -(BOOL)WordIsAlreadyInDatabase:(NSString *)word;
 -(NSArray *)getAllWords;
 -(NSArray *)getAllUnrecordedWordsinQueue;
+-(NSString *)getComponentBreakdownOfCharacter:(NSString *)character;
+-(NSArray *)lookUpCharacter:(NSString *)character;
 
 //setting/changing entries from coredata
 -(NSArray *)addToDatabaseDictEntryOfWord: (NSString *)word;
 -(void)deleteWordFromQueue:(NSString*)Word;
+-(void)deleteWordFromBank:(NSString*)word;
 -(void)storeAAC:(NSString *)URL ForWord:(NSString *)Word InLanguage:(NSString *)Language;
 @end

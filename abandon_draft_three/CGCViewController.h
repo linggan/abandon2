@@ -26,6 +26,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *definition;
 @property (weak, nonatomic) IBOutlet UILabel *correctOldDrawing;
 @property (weak, nonatomic) IBOutlet UIImageView *oldDrawing;
+@property (weak, nonatomic) IBOutlet UILabel *infoDescription;
 
 @property (nonatomic) Boolean atLastWord;
 

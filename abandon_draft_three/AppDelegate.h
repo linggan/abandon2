@@ -12,7 +12,7 @@
 #import "RecordViewController.h"
 #import "CoreDataDelegate.h"
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate,RootViewControllerDelegate, CoreDataDelegate, RecordViewControllerDelegate>
+@interface AppDelegate : UIResponder <UIApplicationDelegate,RootViewControllerDelegate, CoreDataDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 

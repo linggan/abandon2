@@ -19,14 +19,13 @@
 
 @synthesize wordList;
 
-#define WON 0
-#define LOST 1
+#define INAPP 5
 
 //WE CAN PLAY AROUND WITH THESE TO CHANGE THE AMOUNT OF TIME ANIMATIONS TAKE:
-#define TIMEVISIBLE_FIRSTCARD 1
+#define TIMEVISIBLE_FIRSTCARD 2
 #define MATCHTIME .5
 #define DELAY .03
-#define TIMERSTARTINGVALUE 300
+#define TIMERSTARTINGVALUE 400
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -56,14 +55,12 @@
     self.matchingLabel.backgroundColor = [UIColor clearColor];
     self.inProgress = NO;
     
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Menu" style:UIBarButtonItemStyleBordered target:self.navigationController action:@selector(toggleMenu)];
 
 
 }
 
 -(void)viewDidAppear:(BOOL)animated
 {
-    [self.navigationController setNavigationBarHidden:YES];
 
     self.stopTimer = NO; //If we want to pause the Clock, set this to YES.
     
@@ -80,11 +77,28 @@
     srandom(time(NULL));
     
     [self getWords:self];
-    if (wordList.count>8) {
-        wordList = [NSMutableArray arrayWithObjects:wordList[0], wordList[1], wordList[2], wordList[3], wordList[4], wordList[5], wordList[6], wordList[7], nil];
+    
+    if (wordList.count == 0)
+    {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Your word bank is empty!" message:@"Add more words you're making the kittens cry" delegate:self cancelButtonTitle:@"Fetch!" otherButtonTitles:nil];
+        alertView.tag = INAPP;
+        [alertView show];
+        [self playSound:@"Lose"];
+        self.stopTimer = YES;
+        return;
     }
     
-    //self.wordList = [NSArray arrayWithObjects:self.wordList[2], self.wordList[3], nil];
+    if (wordList.count>10) {
+        NSMutableArray *copiedArray = [wordList mutableCopy];
+        NSMutableArray *newWordList = [NSMutableArray array];
+        for (int i=0;i<10;i++)
+        {
+            NSInteger randomChoice = random() % (copiedArray.count);
+            [newWordList addObject:copiedArray[randomChoice]];
+            [copiedArray removeObjectAtIndex:randomChoice];
+        }
+        wordList = newWordList;
+    }
     
     //Smaller arrays that store each of the cards we will use.
     self.allBlueCards = [NSMutableArray arrayWithArray:self.wordList];
@@ -100,7 +114,7 @@
 {
     [self.audioPlayer stop];
     self.stopTimer = YES;
-    [self.navigationController setNavigationBarHidden:NO];
+    self.prevCell = nil;
 }
 
 -(void)getWords:(id)ViewController{
@@ -114,11 +128,19 @@
         NSURL *url = [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@/SlideCard2.wav", [[NSBundle mainBundle] resourcePath]]];
         NSError *error = nil;
         self.audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:&error];
+        self.audioPlayer.volume = 0.1;
         [self.audioPlayer play];
     }
-    else if (sound == @"Applause")
+    else if (sound == @"Win")
     {
-        NSURL *url = [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@/Applause.wav", [[NSBundle mainBundle] resourcePath]]];
+        NSURL *url = [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@/PurringCat.wav", [[NSBundle mainBundle] resourcePath]]];
+        NSError *error = nil;
+        self.audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:&error];
+        [self.audioPlayer play];
+    }
+    else if (sound == @"Lose")
+    {
+        NSURL *url = [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@/GrowlingDog.wav", [[NSBundle mainBundle] resourcePath]]];
         NSError *error = nil;
         self.audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:&error];
         [self.audioPlayer play];
@@ -155,39 +177,34 @@
 }
 
 -(void)exitWithFailure {  //exits the game if you lose.
+    [self playSound:@"Lose"];
     UIAlertView *alert = [[UIAlertView alloc]
                           initWithTitle: @"Dog-gone it!"
                           message: @"You obviously need some more purrr-actice!"
                           delegate: self
                           cancelButtonTitle:@"OK"
                           otherButtonTitles:nil];
-    alert.tag = LOST;
+    alert.tag = INAPP;
     [alert show];
 }
 
 -(void)exitWithWinning { //exits the game if you win.
-    [self playSound:@"Applause"];
+    [self playSound:@"Win"];
     UIAlertView *alert = [[UIAlertView alloc]
                           initWithTitle: @"Cat tastic!!"
                           message: @"Go fetch some new words!"
                           delegate: self
                           cancelButtonTitle: @"OK"
                           otherButtonTitles:nil];
-    alert.tag = WON;
+    alert.tag = INAPP;
     [alert show];
 }
 
 -(void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
-    if (alertView.tag == WON)
-    {
+    if (alertView.tag == INAPP) {
         self.inProgress = NO;
-        [self.navigationController popViewControllerAnimated:NO];
-    }
-    else if (alertView.tag == LOST)
-    {
-        self.inProgress = NO;
-        [self.navigationController popViewControllerAnimated:NO];
+        [self.navigationController popToRootViewControllerAnimated:NO];
     }
 }
 
@@ -271,7 +288,7 @@
     
     if (self.allBlueCards.count > 0)
     { //Creates all the blue cards first.
-        cell.backOfCard = [UIImage imageNamed:@"BlueCard"];
+        cell.backOfCard = [UIImage imageNamed:@"BlackSwirl3"];
         NSInteger squareToMatchAt = random() % (self.allBlueCards.count);
         [cell setData:[self.allBlueCards objectAtIndex:squareToMatchAt] :0];
         [cell clearData];
@@ -279,7 +296,7 @@
     }
     else if (self.allBlueCards.count <= 0)
     { //When all blue cards have been created, then creates the red cards.
-        cell.backOfCard = [UIImage imageNamed:@"RedCard"];
+        cell.backOfCard = [UIImage imageNamed:@"SquareWithDogs"];
         NSInteger squareToMatchAt = random() % (self.allRedCards.count);
         [cell setData:[self.allRedCards objectAtIndex:squareToMatchAt] :1];
         [cell clearData];
@@ -314,16 +331,28 @@
     NSInteger width = 110;
     if (totalCards > 5)
     {
-        width = 70;
+        width = 100;
+    }
+    if (totalCards > 7)
+    {
+        width = 82;
     }
     if (totalCards > 9)
     {
-        width = 50;
+        width = 80;
+    }
+    if (totalCards > 13)
+    {
+        width = 65;
+    }
+    if (totalCards > 15)
+    {
+        width = 57;
     }
     //----------------------------
     
     
-    NSInteger height = width * 3/2;
+    NSInteger height = width;
     
     CGSize retval = CGSizeMake(width, height);
     return retval;

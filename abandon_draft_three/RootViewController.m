@@ -12,7 +12,7 @@
 #import "NavigationViewController.h"
 
 
-#define kOFFSET_FOR_KEYBOARD 100.0
+#define kOFFSET_FOR_KEYBOARD 90.0
 
 
 @interface RootViewController ()
@@ -105,27 +105,51 @@
     
     //and then see if the dictionary contains an entry for this word
     else{
-        NSArray *entryFound = [[self dataDelegate] addToDatabaseDictEntryOfWord:word];
+        UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        spinner.center = CGPointMake(160, 260);
+        spinner.color = [UIColor colorWithRed:(float)255/255 green:(float)101/255 blue:(float)136/255 alpha:1];
+
+        __block NSArray *entryFound;
         
-        if([entryFound count] != 0){
-            NewCharacterScreenViewController *viewController = [[NewCharacterScreenViewController alloc]init];
+        [self.view addSubview:spinner];
+        [spinner startAnimating];
+        
+        
+        dispatch_queue_t searchQueue = dispatch_queue_create("search", NULL);
+        dispatch_async(searchQueue, ^{
             
-            [viewController setModalDelegate:self];
-            [viewController setWord:entryFound];
-            viewController.modalPresentationStyle = UIModalPresentationPageSheet;
-            [self presentViewController:viewController animated:YES completion:NULL];
-        }
-        
-        [_WordInputField setText:@""];
+            entryFound = [[self dataDelegate] addToDatabaseDictEntryOfWord:word];
+            [NSThread sleepForTimeInterval:10];
+            
+            if([entryFound count] != 0){
+                NewCharacterScreenViewController *viewController = [[NewCharacterScreenViewController alloc]init];
                 
-        if (!entryFound){
-            [[[UIAlertView alloc]
-              initWithTitle:@"Nothing. Dang."
-              message:@"Sorry. Looks like our dictionary doesn't have that word."
-              delegate:self
-              cancelButtonTitle:@"Forgive us?"
-              otherButtonTitles: nil] show];
-        }
+                [viewController setModalDelegate:self];
+                [viewController setWord:entryFound];
+                viewController.modalPresentationStyle = UIModalPresentationPageSheet;
+                [self presentViewController:viewController animated:YES completion:NULL];
+            }
+            
+            [_WordInputField setText:@""];
+            
+            if (!entryFound){
+                [[[UIAlertView alloc]
+                  initWithTitle:@"Nothing. Dang."
+                  message:@"Sorry. Looks like our dictionary doesn't have that word."
+                  delegate:self
+                  cancelButtonTitle:@"Forgive us?"
+                  otherButtonTitles: nil] show];
+            }
+            
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [spinner stopAnimating];
+                });
+            
+            });
+        
+        
+        
         
     }
     [self dismissKeyboard];
