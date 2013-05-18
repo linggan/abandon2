@@ -19,6 +19,7 @@
         _characterBoxText = [[UILabel alloc]initWithFrame:frame];
         [_characterBoxText setTextAlignment:NSTextAlignmentCenter];
         [_characterBoxText setText:character];
+        self.character = character;
         [_characterBoxText setTextColor:[UIColor whiteColor]];
         [_characterBoxText setBackgroundColor:[UIColor colorWithRed:(float)102/255 green:(float)102/255 blue:(float)102/255 alpha:1]];
         [[_characterBoxText layer] setMasksToBounds:YES];
@@ -31,6 +32,11 @@
     }
     
     return self;
+}
+
+-(NSString*)getWord
+{
+    return self.character;
 }
 
 

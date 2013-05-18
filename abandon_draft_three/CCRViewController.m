@@ -9,6 +9,7 @@
 #import "CCRViewController.h"
 
 @interface CCRViewController () <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UIAlertViewDelegate>
+//The View Controller for the Memory Game
 
 @end
 
@@ -61,7 +62,6 @@
 
 -(void)viewDidAppear:(BOOL)animated
 {
-
     self.stopTimer = NO; //If we want to pause the Clock, set this to YES.
     
     if (!self.inProgress)
@@ -88,7 +88,8 @@
         return;
     }
     
-    if (wordList.count>10) {
+    if (wordList.count>10) { //If there's more than 10 words in the word bank, randomly chooses 10 of those words
+        //to creates cards to play with.
         NSMutableArray *copiedArray = [wordList mutableCopy];
         NSMutableArray *newWordList = [NSMutableArray array];
         for (int i=0;i<10;i++)
@@ -115,6 +116,8 @@
     [self.audioPlayer stop];
     self.stopTimer = YES;
     self.prevCell = nil;
+    self.totalMatched = 0;
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 -(void)getWords:(id)ViewController{

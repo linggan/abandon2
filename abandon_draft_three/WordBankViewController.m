@@ -8,10 +8,11 @@
 
 #import "WordBankViewController.h"
 #import "MGScrollView.h"
-#import "CharacterGridBox.h"
 #import "CharacterInfoViewController.h"
 #import "FlatButton.h"
 #import "REMenu.h"
+#import "MGScrollView.h"
+#import "CharacterGridBox.h"
 
 
 @implementation WordBankViewController
@@ -19,7 +20,17 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
     [self getWords:self];
+    
+    //Refreshes the screen by drawing a new gray backdrop each time the view is loaded
+    CGRect frameToDrawGrayIn = self.view.frame;
+    UIImageView *grayness = [[UIImageView alloc] initWithFrame:frameToDrawGrayIn];
+    [grayness setBackgroundColor:[UIColor grayColor]];
+    [self.view addSubview:grayness];
     
     MGScrollView *scroller = [MGScrollView scrollerWithSize:self.view.bounds.size];
     [self.view addSubview:scroller];
@@ -29,11 +40,10 @@
     grid.contentLayoutMode = MGLayoutGridStyle;
     [scroller.boxes addObject:grid];
     
-    
     for (id word in _wordList){
         NSString *hanzi = [word valueForKey:@"chinese"];
-        //NSArray *wordArray = @[[word valueForKey:@"chinese"], [word valueForKey:@"pinyin"], [word valueForKey:@"english"], [word valueForKey:@"firstDecomp"], [word valueForKey:@"secondDecomp"]];
         CharacterGridBox *wordTile = [[CharacterGridBox alloc]initWithFrame: CGRectMake(0, 0, 53.3*ceil((double)hanzi.length/2), 44)AndCharacter:hanzi];
+                
         [[grid boxes] addObject:wordTile];
         
         wordTile.onTap = ^{
@@ -44,7 +54,6 @@
             viewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
             [self presentViewController:viewController animated:YES completion:NULL];
         };
-        
     }
     
     [grid layoutWithSpeed:0.3 completion:nil];
@@ -78,7 +87,6 @@
 -(void)didDeleteWord: (NSManagedObject *)word{
     [[self view] setNeedsDisplay];
     [_wordList removeObject:word];
-
 }
 
 @end

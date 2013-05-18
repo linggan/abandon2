@@ -10,7 +10,7 @@
 #import "CCRMemoryCardCell.h"
 #import "CoreDataDelegate.h"
 
-@interface CCRViewController : UIViewController
+@interface CCRViewController : UIViewController //The View Controller for the Memory Game
 
 @property (nonatomic, assign) id<CoreDataDelegate> dataDelegate;
 
@@ -34,7 +34,7 @@
 @property (nonatomic) Boolean stopTimer;
 @property (nonatomic) Boolean inProgress;
 
--(void)respondToLooking:(NSNotification*)notification;
+-(void)respondToLooking:(NSNotification*)notification; //this method compares two cards to see if they're a match
 
 -(void)exitWithFailure;
 -(void)exitWithWinning;

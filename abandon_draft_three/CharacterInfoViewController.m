@@ -35,6 +35,7 @@
     [_pinyin setText:[_word valueForKey:@"pinyin"]];
     [_english setText:[_word valueForKey:@"english"]];
     [_breakdown setText:[_word valueForKey:@"firstDecomp"]];
+    [_mnemonic setText:[_word valueForKey:@"mnemonic"]];
     
     //send help labels to back
     helpVisible = FALSE;
@@ -46,17 +47,41 @@
     [_mnemonic setDelegate:self];
 
     //add flat buttons
-    UIButton *helpBtn = [FlatButton FlatButtonWithFrame:CGRectMake(27, 470, 75, 35) WithText:@"help" andBackgroundColor:[UIColor colorWithRed:(float)136/255 green:(float)184/255 blue:(float)184/255 alpha:0.58]];
-    [[helpBtn titleLabel] setFont:[UIFont fontWithName:@"Futura-CondensedMedium" size:13]];
+    UIButton *helpBtn;
+    UIButton *deleteWordBtn;
+    UIButton *gottenButton;
     
-    UIButton *deleteWordBtn = [FlatButton FlatButtonWithFrame:CGRectMake(122, 470, 70, 35) WithText:@"delete word" andBackgroundColor:[UIColor colorWithRed:(float)136/255 green:(float)184/255 blue:(float)184/255 alpha:0.58]];
-    [[deleteWordBtn titleLabel] setFont:[UIFont fontWithName:@"Futura-CondensedMedium" size:13]];
+    if ([self hasFourInchDisplay]) {
+        helpBtn = [FlatButton FlatButtonWithFrame:CGRectMake(27, 470, 75, 35) WithText:@"help" andBackgroundColor:[UIColor colorWithRed:(float)136/255 green:(float)184/255 blue:(float)184/255 alpha:0.58]];
+        [[helpBtn titleLabel] setFont:[UIFont fontWithName:@"Futura-CondensedMedium" size:13]];
+    
+        deleteWordBtn = [FlatButton FlatButtonWithFrame:CGRectMake(122, 470, 70, 35) WithText:@"delete word" andBackgroundColor:[UIColor colorWithRed:(float)136/255 green:(float)184/255 blue:(float)184/255 alpha:0.58]];
+        [[deleteWordBtn titleLabel] setFont:[UIFont fontWithName:@"Futura-CondensedMedium" size:13]];
+        
+        gottenButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [gottenButton setFrame:CGRectMake(220, 470, 70, 35)];
+    }
+    else {
+        helpBtn = [FlatButton FlatButtonWithFrame:CGRectMake(27, 400, 75, 35) WithText:@"help" andBackgroundColor:[UIColor colorWithRed:(float)136/255 green:(float)184/255 blue:(float)184/255 alpha:0.58]];
+        [[helpBtn titleLabel] setFont:[UIFont fontWithName:@"Futura-CondensedMedium" size:13]];
+        
+        deleteWordBtn = [FlatButton FlatButtonWithFrame:CGRectMake(122, 400, 70, 35) WithText:@"delete word" andBackgroundColor:[UIColor colorWithRed:(float)136/255 green:(float)184/255 blue:(float)184/255 alpha:0.58]];
+        [[deleteWordBtn titleLabel] setFont:[UIFont fontWithName:@"Futura-CondensedMedium" size:13]];
+        
+        gottenButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [gottenButton setFrame:CGRectMake(220, 400, 70, 35)];
+    }
 
     [[self view] addSubview:helpBtn];
     [helpBtn addTarget:self action:@selector(makeHelpVisible) forControlEvents:UIControlEventTouchDown];
     
     [[self view] addSubview:deleteWordBtn];
     [deleteWordBtn addTarget:self action:@selector(delete) forControlEvents:UIControlEventTouchDown];
+    
+    [gottenButton setTitle:@"Got this." forState:UIControlStateNormal];
+    [[gottenButton titleLabel] setFont:[UIFont fontWithName:@"Futura-CondensedMedium" size:13]];
+    [self.view addSubview:gottenButton];
+    [gottenButton addTarget:self action:@selector(dismissScreen) forControlEvents:UIControlEventTouchDown];
 
     //init audio player and sesson
     AVAudioSession *session = [AVAudioSession sharedInstance];
@@ -91,7 +116,7 @@
     [[_chinese viewWithTag:0]addGestureRecognizer:playTap];
     
     /* //to incorporate later
-    //double tap to redo recording
+    //tap to redo recording
     UITapGestureRecognizer *recordTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleRecordTap:)];
     recordTap.numberOfTapsRequired = 1;
     recordTap.numberOfTouchesRequired = 2;
@@ -101,6 +126,11 @@
 
     
 }
+
+- (BOOL)hasFourInchDisplay { //detects if it's 4in or 3.5 in. retina display
+    return ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone && [UIScreen mainScreen].bounds.size.height == 568.0);
+}
+
 
 - (void)didReceiveMemoryWarning
 {
@@ -114,7 +144,7 @@
 }
 
 
-- (IBAction)dismissScreen:(id)sender {
+- (void)dismissScreen {
     [self didSelectDone:self];
 }
 
@@ -186,6 +216,7 @@
 
 
 -(void)textViewDidEndEditing:(UITextView *)textView{
+    [[self dataDelegate] addMnemonic:textView.text ToWord:[_word valueForKey:@"chinese"]];
     [textView resignFirstResponder];
 }
 
@@ -222,6 +253,7 @@
     [[self dataDelegate] deleteWordFromBank:[_word valueForKey:@"chinese"]];
     [[self delegate] didDeleteWord:_word];
     [self didSelectDone:self];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"WordHasBeenDeleted" object:_word];
 }
 
 

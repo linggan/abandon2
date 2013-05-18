@@ -14,12 +14,18 @@
 @property (nonatomic, assign) id<CoreDataDelegate> dataDelegate;
 @property (weak, nonatomic) IBOutlet UILabel *englishDefinition;
 @property (weak, nonatomic) IBOutlet UIImageView *definitionImage;
-@property (weak, nonatomic) IBOutlet UIButton *backgroundSelectedTint;
 @property (weak, nonatomic) IBOutlet UILabel *timerDisplay;
 @property (weak, nonatomic) IBOutlet UILabel *popUpStatus;
 
+@property (weak, nonatomic) IBOutlet UIImageView *instructions;
+
+- (IBAction)closeInstructions:(id)sender;
+
+@property (weak, nonatomic) IBOutlet UIButton *instructionsButton;
+
+@property (nonatomic) NSInteger showInstructions;
+
 @property (nonatomic, strong) NSArray *wordList;
-@property (nonatomic, strong) NSMutableArray *cgRectsForAllBubbles;
 @property (nonatomic) NSInteger counter;
 @property (nonatomic) Boolean stopTimer;
 

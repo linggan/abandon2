@@ -35,13 +35,13 @@
     UIImage *bubbleImage = [UIImage imageNamed:@"Bubble"];
     [self setBackgroundImage:bubbleImage forState:UIControlStateNormal];
         
-    NSTimer *animationTimer = [NSTimer scheduledTimerWithTimeInterval:0.05 target:self selector:@selector(animateBubble) userInfo:nil repeats:YES];
+    NSTimer *animationTimer = [NSTimer scheduledTimerWithTimeInterval:0.05 target:self selector:@selector(animateBubble) userInfo:nil repeats:YES]; //This timer animates the bubbles and makes them move in a set direction.
     
-    NSTimer *switchDirectionTimer = [NSTimer scheduledTimerWithTimeInterval:0.8 target:self selector:@selector(switchDirection) userInfo:nil repeats:YES];
+    NSTimer *switchDirectionTimer = [NSTimer scheduledTimerWithTimeInterval:0.8 target:self selector:@selector(switchDirection) userInfo:nil repeats:YES]; //This timer runs less often and changes the direction that the bubbles move in.
 }
 
 -(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
-{
+{ //Makes the bubbles follow the user's finger when they're grabbed.
     UITouch *touch = [touches anyObject];
     CGPoint PointToMoveBubbleTo = [touch locationInView:self.superview];
     if (PointToMoveBubbleTo.x < 0) {
@@ -112,39 +112,6 @@
 
 }
 
-
-//Code to size label, found on Stack Overflow http://stackoverflow.com/questions/7158581/changing-label-text-size-in-code
-- (void) sizeLabel: (UILabel *) label toRect: (CGRect) labelRect  {
-    
-    // Set the frame of the label to the targeted rectangle
-    label.frame = labelRect;
-    
-    // Try all font sizes from largest to smallest font size
-    int fontSize = 16;
-    int minFontSize = 5;
-    
-    // Fit label width wize
-    CGSize constraintSize = CGSizeMake(label.frame.size.width, MAXFLOAT);
-    
-    do {
-        // Set current font size
-        label.font = [UIFont fontWithName:@"Futura" size:fontSize];
-        
-        // Find label size for current font size
-        CGSize labelSize = [[label text] sizeWithFont:label.font
-                                    constrainedToSize:constraintSize
-                                        lineBreakMode:UILineBreakModeWordWrap];
-        
-        // Done, if created label is within target size
-        if( labelSize.height <= label.frame.size.height )
-            break;
-        
-        // Decrease the font size and try again
-        fontSize --;
-        
-    } while (fontSize > minFontSize);
-}
-
 -(void)animatePopping
 {
     self.userInteractionEnabled = NO;
@@ -181,7 +148,8 @@
 
 -(void)bubbleGrabbed
 {
-    self.moving = NO;
+    self.moving = NO; //when it's grabbed, stops the animation
+    [self playRecording];
 }
 
 -(void)bubbleReleased
@@ -191,11 +159,29 @@
         [[NSNotificationCenter defaultCenter] postNotificationName:@"BubbleReleasedInDefinitionZone" object:self];
     }
     self.moving = YES;
+    [self.recordingPlayer stop];
 }
 
 -(NSObject*)getThisBubbleWord {
     return self.thisBubbleWord;
 }
+
+-(void)playRecording
+{
+    NSURL *url;
+    if ([self.getThisBubbleWord valueForKey:@"chineseRecording"] != nil) {
+        url = [NSURL fileURLWithPath:[self.getThisBubbleWord valueForKey:@"chineseRecording"]];
+    }
+    
+    if (url!=nil)
+    {
+        NSError *error = nil;
+        self.recordingPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:&error];
+        self.recordingPlayer.volume = 1.0;
+        [self.recordingPlayer play];
+    }
+}
+
 
 
 /*

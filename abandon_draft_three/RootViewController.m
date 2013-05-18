@@ -119,31 +119,29 @@
         dispatch_async(searchQueue, ^{
             
             entryFound = [[self dataDelegate] addToDatabaseDictEntryOfWord:word];
-            [NSThread sleepForTimeInterval:10];
-            
-            if([entryFound count] != 0){
-                NewCharacterScreenViewController *viewController = [[NewCharacterScreenViewController alloc]init];
-                
-                [viewController setModalDelegate:self];
-                [viewController setWord:entryFound];
-                viewController.modalPresentationStyle = UIModalPresentationPageSheet;
-                [self presentViewController:viewController animated:YES completion:NULL];
-            }
-            
-            [_WordInputField setText:@""];
-            
-            if (!entryFound){
-                [[[UIAlertView alloc]
-                  initWithTitle:@"Nothing. Dang."
-                  message:@"Sorry. Looks like our dictionary doesn't have that word."
-                  delegate:self
-                  cancelButtonTitle:@"Forgive us?"
-                  otherButtonTitles: nil] show];
-            }
-            
+            [NSThread sleepForTimeInterval:0.03];
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 [spinner stopAnimating];
+                if([entryFound count] != 0){
+                    NewCharacterScreenViewController *viewController = [[NewCharacterScreenViewController alloc]init];
+                    
+                    [viewController setModalDelegate:self];
+                    [viewController setWord:entryFound];
+                    viewController.modalPresentationStyle = UIModalPresentationPageSheet;
+                    [self presentViewController:viewController animated:YES completion:NULL];
+                }
+                
+                [_WordInputField setText:@""];
+                
+                if (!entryFound){
+                    [[[UIAlertView alloc]
+                      initWithTitle:@"Nothing. Dang."
+                      message:@"Sorry. Looks like our dictionary doesn't have that word."
+                      delegate:self
+                      cancelButtonTitle:@"Forgive us?"
+                      otherButtonTitles: nil] show];
+                }
                 });
             
             });

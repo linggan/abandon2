@@ -26,7 +26,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    NSLog(@"array is %@", _word);
     [_chinese setText:[_word objectAtIndex:0]];
     [_pinyin setText:[_word objectAtIndex:1]];
     [_english setText:[_word objectAtIndex:2]];
@@ -40,7 +39,7 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (IBAction)didSelectDone:(id)sender {
+- (void)didSelectDone:(id)sender {
     [self.modalDelegate didDismissPresentedViewController];
 }
 

@@ -18,6 +18,7 @@
 
 //setting/changing entries from coredata
 -(NSArray *)addToDatabaseDictEntryOfWord: (NSString *)word;
+-(void)addMnemonic:(NSString*)mnemonic ToWord:(NSString*)word;
 -(void)deleteWordFromQueue:(NSString*)Word;
 -(void)deleteWordFromBank:(NSString*)word;
 -(void)storeAAC:(NSString *)URL ForWord:(NSString *)Word InLanguage:(NSString *)Language;

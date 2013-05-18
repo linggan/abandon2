@@ -15,4 +15,10 @@
 
 - (id)initWithFrame:(CGRect)frame AndCharacter: (NSString *)character;
 
+@property (nonatomic, strong) NSString *character;
+
+-(NSString*)getCharacter;
+
+-(void)removeBox;
+
 @end

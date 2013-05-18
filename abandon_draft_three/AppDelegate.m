@@ -52,14 +52,13 @@
     [MagicalRecord setupCoreDataStackWithStoreNamed:@"abandon_draft_three"];
     
     //if databases hasn't been parsed through, parse through it
-    DictEntry *result = [DictEntry MR_findFirstWithPredicate:[NSPredicate predicateWithFormat:@"traditional like[cd] %@", @"的"]];
+    DictEntry *result = [DictEntry MR_findFirstWithPredicate:[NSPredicate predicateWithFormat:@"traditional = %@", @"的"]];
     if (!result){
         [self parseDict];
         [self parseDecompDB];
         [self parseRadicalDB];
     }
-    
-    
+
     return YES;
 
 }
@@ -67,7 +66,13 @@
 -(void)deleteData{
     
     NSManagedObjectContext *context = [NSManagedObjectContext MR_contextForCurrentThread];
+    /*
     NSArray *words = [Word MR_findAll];
+    
+    for (id word in words){
+        [context deleteObject:word];
+    }*/
+    NSArray *words = [DecompEntry MR_findAll];
     
     for (id word in words){
         [context deleteObject:word];
@@ -110,6 +115,7 @@
     //[] is pinyin
     //first and last / is english definition
     
+    
     for (int i = 0; i<[dictionaryArray count]; i++){
         NSString *currentEntry = dictionaryArray[i];
         NSArray *entrySplitByWhitespace = [currentEntry componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
@@ -134,40 +140,30 @@
         
     }
     
-    [self saveContext];
-    
+    [self saveContext];    
 }
 
 -(void)parseDecompDB{
-    //given word, for each word, search in decomp data for
-    NSString* path = [[NSBundle mainBundle] pathForResource:@"cjk-decomp-0.4.0" ofType:@"txt"];
-    NSString* dictionaryContent = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:NULL];
+    NSString* pathTwo = [[NSBundle mainBundle] pathForResource:@"decompDB" ofType:@"txt"];
+    NSString* dictionaryContent = [NSString stringWithContentsOfFile:pathTwo encoding:NSUTF8StringEncoding error:NULL];
     
     NSMutableArray *dictionaryArray = [[dictionaryContent componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]] mutableCopy];
     
-    //delete indices that are only whitespace
-    NSIndexSet *indexSet = [dictionaryArray indexesOfObjectsPassingTest:^(NSString *obj, NSUInteger idx, BOOL *stop){
-        return [obj isEqualToString:@""];
-    }];
     
-    [dictionaryArray removeObjectsAtIndexes:indexSet];
-    
-    for (int i = 0; i<[dictionaryArray count]; i++){
-        NSArray *dictionaryEntrySplit = [dictionaryArray[i] componentsSeparatedByString:@":"];
+    //sample of data from file: [pinyin] [character] [decompostion]
+    //split entry by whitespace 
+    //only keep the character and decomposition from each entry
+    for (int i =0; i<[dictionaryArray count]; i++){
+        NSArray *componentSplit = [dictionaryArray[i] componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+        
         DecompEntry *decompObject = [DecompEntry MR_createEntity];
+        [decompObject setValue:componentSplit[1] forKey:@"character"];
+        [decompObject setValue:componentSplit[2] forKey:@"decomp"];
         
-        NSRange parenOne = [dictionaryEntrySplit[1] rangeOfString:@"("];
-        NSRange parenTwo = [dictionaryEntrySplit[1] rangeOfString:@")"];
-        
-        //the +1 and -1 are to trim the brackets and slashes from the resulting strings
-        NSString *decomp = [dictionaryEntrySplit[1] substringWithRange:NSMakeRange(parenOne.location+1, parenTwo.location-parenOne.location-1)];
-        //NSString *decompTwo = [self decompositionOfCharacter:decomp];
-        
-        [decompObject setValue:dictionaryEntrySplit[0] forKey:@"character"];
-        [decompObject setValue:decomp forKey:@"decomp"];
     }
     
     [self saveContext];
+
 
 }
 
@@ -200,7 +196,6 @@
         
         [radical setValue:character forKey:@"character"];
         [radical setValue:meaning forKey:@"translation"];
-        NSLog(@"here are the new stuff, %@ and %@", [radical valueForKey:@"character"], [radical valueForKey:@"translation"]);
     }
     
     [self saveContext];
@@ -225,7 +220,7 @@
 
 
 -(BOOL)WordIsAlreadyInDatabase:(NSString *)word{
-    NSManagedObject *alreadyInWordBank = [Word MR_findFirstWithPredicate:[NSPredicate predicateWithFormat:@"chinese like[cd] %@", word]];
+    NSManagedObject *alreadyInWordBank = [Word MR_findFirstWithPredicate:[NSPredicate predicateWithFormat:@"chinese = %@", word]];
     
     return alreadyInWordBank? TRUE: FALSE;
 }
@@ -243,55 +238,41 @@
 }
 
 -(NSString *)getComponentBreakdownOfCharacter:(NSString *)chineseCharacter{
-    DecompEntry *decomp = [DecompEntry MR_findFirstWithPredicate:[NSPredicate predicateWithFormat:@"character like[cd] %@", chineseCharacter]];
-    NSArray *decompSplit = [[decomp valueForKey:@"decomp"] componentsSeparatedByString:@","];
+    DecompEntry *decomp = [DecompEntry MR_findFirstWithPredicate:[NSPredicate predicateWithFormat:@"character like %@", chineseCharacter]];
+    
+    NSMutableArray *decompSplit = [NSMutableArray arrayWithCapacity:[[decomp valueForKey:@"decomp"] length]];
+    for (int i = 0; i < [[decomp valueForKey:@"decomp"] length]; i++) {
+        [decompSplit addObject:[NSString stringWithFormat:@"%C", [[decomp valueForKey:@"decomp"] characterAtIndex:i]]];
+    }
+
     NSString *finalString = @"";
     
     for (int i = 0; i<[decompSplit count]; i++){
         NSString *character = decompSplit[i];
-        NSCharacterSet* notDigits = [[NSCharacterSet decimalDigitCharacterSet] invertedSet];
         
-        //recusion here
-        BOOL isNumber = [character rangeOfCharacterFromSet:notDigits].location == NSNotFound;
-        if (isNumber){
-            character = [self getComponentBreakdownOfCharacter:character];
-            finalString = [finalString stringByAppendingString:[NSString stringWithFormat:@"%@", character]];
-        }
-        
-        //base case 1: if character is radical, stop
-        NSString *entryForRadical = [RadicalEntry MR_findFirstWithPredicate:[NSPredicate predicateWithFormat:@"character like[cd] %@", character]];
-        //base case 2: if character has dict entry, stop
-        NSString *entryForDecomp = [self lookUpCharacter:character][2];
-        
+        NSString *entryForRadical = [RadicalEntry MR_findFirstWithPredicate:[NSPredicate predicateWithFormat:@"character like %@", character]];
         
         if (entryForRadical){
             finalString = [finalString stringByAppendingString:[NSString stringWithFormat:@"\t\t\t\t%@: %@\n", character, [entryForRadical valueForKey:@"translation"]]];
-        }
+            continue;}
+                
+        NSString *entryForDecomp = [self lookUpCharacter:character][2];
         
-        else if (entryForDecomp){
-            if ([entryForDecomp rangeOfString:@"/"].location != NSNotFound){
+        if (entryForDecomp){
+            if ([entryForDecomp rangeOfString:@"/"].location != NSNotFound)
                 entryForDecomp = [entryForDecomp substringToIndex:[entryForDecomp rangeOfString:@"/"].location];
-            }
-            
             finalString = [finalString stringByAppendingString:[NSString stringWithFormat:@"\t\t\t\t%@: %@\n", character, entryForDecomp]];
-        }
+            continue;}
 
-
-        
-        //base case three: no definition found
-        else if (!entryForRadical && !entryForDecomp && !isNumber){
-            finalString = [finalString stringByAppendingString:[NSString stringWithFormat:@"%@: not found", character]];
-
-        }
-
-
+         if (!entryForRadical && !entryForDecomp)
+             finalString = [finalString stringByAppendingString:[NSString stringWithFormat:@"%@: not found", character]];
     }
-    
+
     return finalString;
 }
 
 -(NSArray *)lookUpCharacter:(NSString *)character{
-    DictEntry *entry = [DictEntry MR_findFirstWithPredicate:[NSPredicate predicateWithFormat:@"traditional like[cd] %@", character]];
+    DictEntry *entry = [DictEntry MR_findFirstWithPredicate:[NSPredicate predicateWithFormat:@"traditional like %@", character]];
     NSArray *entryArray;
     
     if (entry){
@@ -307,8 +288,8 @@
 #pragma mark - Updating Word Entities From Database
 
 -(NSArray *) addToDatabaseDictEntryOfWord: (NSString *)word{
-    DictEntry *dictEntry = [DictEntry MR_findFirstWithPredicate:[NSPredicate predicateWithFormat:@"traditional like[cd] %@", word]];
-    Word *isRepeatEntry = [Word MR_findFirstWithPredicate:[NSPredicate predicateWithFormat:@"chinese like[cd] %@", word]];
+    DictEntry *dictEntry = [DictEntry MR_findFirstWithPredicate:[NSPredicate predicateWithFormat:@"traditional = %@", word]];
+    Word *isRepeatEntry = [Word MR_findFirstWithPredicate:[NSPredicate predicateWithFormat:@"chinese = %@", word]];
     NSArray *resultArray;
     
     //if word is not found or is in database already, return nil
@@ -328,47 +309,49 @@
         [wordObject setValue:[dictEntry valueForKey:@"pinyin"] forKey:@"pinyin"];
         [wordObject setValue:[dictEntry valueForKey:@"english"] forKey:@"english"];
         
-        //add decomposition data from groovylanguage database
+        
+        //add decomposition data
         //first, split whole word into separate strings for each character
         NSMutableArray *stringBuffer = [NSMutableArray arrayWithCapacity:[word length]];
         for (int i = 0; i < [word length]; i++) {
             [stringBuffer addObject:[NSString stringWithFormat:@"%C", [word characterAtIndex:i]]];
         }
         
-        NSString *decomposition;
-        NSString *dictEntry;
-        NSString *completeBreakdown;
-        NSString *resultString = @"";
-        
-        //get first breakdown of each character
-        for(int i=0; i<[word length]; i++){
-            NSString *dictEntry = [self lookUpCharacter:stringBuffer[i]][2];
-            if ([dictEntry rangeOfString:@"/"].location != NSNotFound){
-                dictEntry = [dictEntry substringToIndex:[dictEntry rangeOfString:@"/"].location];
+            NSString *decomposition;
+            NSString *dictEntry;
+            NSString *completeBreakdown;
+            NSString *resultString = @"";
+            
+            //get first breakdown of each character
+            for(int i=0; i<[word length]; i++){
+                NSString *dictEntry = [self lookUpCharacter:stringBuffer[i]][2];
+                if ([dictEntry rangeOfString:@"/"].location != NSNotFound){
+                    dictEntry = [dictEntry substringToIndex:[dictEntry rangeOfString:@"/"].location];
+                }
+                
+                NSString *completeEntry = [NSString stringWithFormat:@"%@: %@\n", stringBuffer[i], dictEntry];
+                
+                resultString = [resultString stringByAppendingString:completeEntry];
             }
             
-            NSString *completeEntry = [NSString stringWithFormat:@"%@: %@\n", stringBuffer[i], dictEntry];
+            [wordObject setValue:resultString forKey:@"firstDecomp"];
             
-            resultString = [resultString stringByAppendingString:completeEntry];
-        }
-        
-        [wordObject setValue:resultString forKey:@"firstDecomp"];
-
-        resultString = @"";
-        
-        //then find find decomposition for each character
-        for (NSString *character in stringBuffer){
-            dictEntry = [self lookUpCharacter:character][2];
-            if ([dictEntry rangeOfString:@"/"].location != NSNotFound){
-                dictEntry = [dictEntry substringToIndex:[dictEntry rangeOfString:@"/"].location];
+            resultString = @"";
+            
+            //then find find decomposition for each character
+            for (NSString *character in stringBuffer){
+                dictEntry = [self lookUpCharacter:character][2];
+                if ([dictEntry rangeOfString:@"/"].location != NSNotFound){
+                    dictEntry = [dictEntry substringToIndex:[dictEntry rangeOfString:@"/"].location];
+                }
+                
+                decomposition = [self getComponentBreakdownOfCharacter:character];
+                completeBreakdown = [NSString stringWithFormat:@"%@: %@\n%@\n", character, dictEntry, decomposition];
+                resultString = [resultString stringByAppendingString:completeBreakdown];
             }
             
-            decomposition = [self getComponentBreakdownOfCharacter:character];
-            completeBreakdown = [NSString stringWithFormat:@"%@: %@\n%@\n", character, dictEntry, decomposition];
-            resultString = [resultString stringByAppendingString:completeBreakdown];
-        }
-        
-        [wordObject setValue:resultString forKey:@"secondDecomp"];
+            [wordObject setValue:resultString forKey:@"secondDecomp"];
+            
 
         
         //if no queue, create queue
@@ -392,7 +375,7 @@
 
 -(void)deleteWordFromQueue:(NSString*)word{
     Queue *queue = [Queue MR_findFirst];
-    Word *wordObject = [Word MR_findFirstWithPredicate:[NSPredicate predicateWithFormat:@"chinese like[cd] %@", word]];
+    Word *wordObject = [Word MR_findFirstWithPredicate:[NSPredicate predicateWithFormat:@"chinese = %@", word]];
     
     NSMutableSet *newWords = [queue mutableSetValueForKey:@"notRecorded"];
     [newWords removeObject:wordObject];
@@ -401,7 +384,7 @@
 }
 
 -(void)deleteWordFromBank:(NSString *)word{
-    Word *wordObject = [Word MR_findFirstWithPredicate:[NSPredicate predicateWithFormat:@"chinese like[cd] %@", word]];
+    Word *wordObject = [Word MR_findFirstWithPredicate:[NSPredicate predicateWithFormat:@"chinese = %@", word]];
     NSManagedObjectContext *context = [NSManagedObjectContext MR_contextForCurrentThread];
     
     [context deleteObject:wordObject];
@@ -409,9 +392,17 @@
     [self saveContext];
 }
 
+-(void)addMnemonic:(NSString*)mnemonic ToWord:(NSString*)word{
+    Word *wordObject = [Word MR_findFirstWithPredicate:[NSPredicate predicateWithFormat:@"chinese = %@", word]];
+    
+    [wordObject setValue:mnemonic forKey:@"mnemonic"];
+    
+    [self saveContext];
+
+}
 
 -(void)storeAAC:(NSString *)URL ForWord:(NSString *)word InLanguage:(NSString *)Language{
-    Word *wordObject = [Word MR_findFirstWithPredicate:[NSPredicate predicateWithFormat:@"chinese like[cd] %@", word]];
+    Word *wordObject = [Word MR_findFirstWithPredicate:[NSPredicate predicateWithFormat:@"chinese = %@", word]];
     
     if ([Language isEqualToString:@"English"]){
         [wordObject setValue:URL forKey:@"englishRecording"];

@@ -8,7 +8,7 @@
 
 #import "CGCViewController.h"
 
-@interface CGCViewController () <UIAlertViewDelegate>
+@interface CGCViewController () <UIAlertViewDelegate> //The View Controller for the Drawing Practice Game
 
 @end
 
@@ -34,7 +34,7 @@
     
     [self getWords:self];
     NSLog(@"Before Alert View");
-    if (wordList.count <= 0)
+    if (wordList.count <= 0) //If there's no words in the word bank, it complains to the user in an Alert View
     {
         NSLog(@"Alert View");
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Your word bank is empty!" message:@"Add more words you're making the kittens cry" delegate:self cancelButtonTitle:@"Fetch!" otherButtonTitles:nil];
@@ -47,9 +47,6 @@
     self.oldDrawing.image = nil;
     self.correctOldDrawing.text = @"";
     atLastWord  = NO;
-    
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Menu" style:UIBarButtonItemStyleBordered target:self.navigationController action:@selector(toggleMenu)];
-
 }
 
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -78,7 +75,7 @@
 
 -(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    if (atLastWord) {
+    if (atLastWord) { //If we're at the last word, doesn't let th user draw something, only displays the previous drawing.
         return;
     }
     
@@ -104,7 +101,8 @@
 -(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
     if (atLastWord) {
-        return;
+        return; //If we're at the last word, it doesn't let the user draw anything, only displays
+        //the previous drawing.
     }
     
     if (!self.mouseSwiped)
@@ -135,9 +133,7 @@
 }
 
 - (IBAction)storeImage:(id)sender {
-    
-    NSLog(@"WordListTracker is %i and WordList count is %i", self.wordListTracker, self.wordList.count);
-    
+        
     if (self.wordListTracker > self.wordList.count-1)
     {
         [self.navigationController popViewControllerAnimated:YES];
@@ -145,7 +141,6 @@
     }
     else if (self.wordListTracker <= self.wordList.count-1)
     {
-        NSLog(@"Hit!");
         UIImage *mostRecentImage = self.imageView.image;
         if (mostRecentImage == nil) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Don't be lazy!" message:@"Draw Something!" delegate:nil cancelButtonTitle:@"Fine" otherButtonTitles:nil, nil];
@@ -160,6 +155,7 @@
             self.definition.text = [wordList[self.wordListTracker] valueForKey:@"english"];
         }
         else {
+            //Let's the user know we're done drawing.
             self.definition.text = @"";
             self.infoDescription.text = @"DONE DRAWING!";
             atLastWord = YES;

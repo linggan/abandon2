@@ -1,22 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="2061" systemVersion="12D78" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="DecompEntry" representedClassName="DecompEntry" syncable="YES">
-        <attribute name="character" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="character" optional="YES" attributeType="String" indexed="YES" syncable="YES"/>
         <attribute name="decomp" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="DictEntry" representedClassName="DictEntry" syncable="YES">
         <attribute name="english" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="mnemonic" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="pinyin" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="simplified" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="traditional" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="traditional" optional="YES" attributeType="String" indexed="YES" syncable="YES"/>
     </entity>
     <entity name="Queue" representedClassName="Queue" syncable="YES">
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="notRecorded" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Word" syncable="YES"/>
     </entity>
     <entity name="RadicalEntry" representedClassName="RadicalEntry" syncable="YES">
-        <attribute name="character" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="character" optional="YES" attributeType="String" indexed="YES" syncable="YES"/>
         <attribute name="translation" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="Word" representedClassName="Word" syncable="YES">
@@ -31,7 +30,7 @@
     </entity>
     <elements>
         <element name="DecompEntry" positionX="160" positionY="192" width="128" height="75"/>
-        <element name="DictEntry" positionX="160" positionY="192" width="128" height="120"/>
+        <element name="DictEntry" positionX="160" positionY="192" width="128" height="105"/>
         <element name="Queue" positionX="160" positionY="192" width="128" height="75"/>
         <element name="RadicalEntry" positionX="160" positionY="192" width="128" height="75"/>
         <element name="Word" positionX="160" positionY="192" width="128" height="165"/>

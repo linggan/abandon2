@@ -7,6 +7,17 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8362F1B9174560AE007BD369 /* BubbleGameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8362F1AB174560AD007BD369 /* BubbleGameViewController.m */; };
+		8362F1BA174560AE007BD369 /* BubbleGameViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8362F1AC174560AD007BD369 /* BubbleGameViewController.xib */; };
+		8362F1BB174560AE007BD369 /* BubbleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8362F1AE174560AD007BD369 /* BubbleView.m */; };
+		8362F1BC174560AE007BD369 /* CCRMemoryCardCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8362F1B0174560AD007BD369 /* CCRMemoryCardCell.m */; };
+		8362F1BD174560AE007BD369 /* CCRViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8362F1B2174560AD007BD369 /* CCRViewController.m */; };
+		8362F1BE174560AE007BD369 /* CCRViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8362F1B3174560AE007BD369 /* CCRViewController.xib */; };
+		8362F1BF174560AE007BD369 /* CGCViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8362F1B5174560AE007BD369 /* CGCViewController.m */; };
+		8362F1C0174560AE007BD369 /* CGCViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8362F1B6174560AE007BD369 /* CGCViewController.xib */; };
+		8362F1C1174560AE007BD369 /* Instructions.png in Resources */ = {isa = PBXBuildFile; fileRef = 8362F1B7174560AE007BD369 /* Instructions.png */; };
+		8362F1C2174560AE007BD369 /* MemoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8362F1B8174560AE007BD369 /* MemoryCell.xib */; };
+		C40D568B1746E49800E50797 /* decompDB.txt in Resources */ = {isa = PBXBuildFile; fileRef = C40D568A1746E49800E50797 /* decompDB.txt */; };
 		C42DECA1173647B2008EAD0F /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = C42DECA0173647B1008EAD0F /* icon.png */; };
 		C42DECA8173649B0008EAD0F /* retinaIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = C42DECA7173649B0008EAD0F /* retinaIcon.png */; };
 		C42DECB017364FF0008EAD0F /* background.png in Resources */ = {isa = PBXBuildFile; fileRef = C42DECAF17364FF0008EAD0F /* background.png */; };
@@ -103,7 +114,6 @@
 		C468BC5E1736254800253DC0 /* CoreDataTestHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = C468BC5D1736254800253DC0 /* CoreDataTestHelper.m */; };
 		C4873A92174442FB00665ABA /* CharacterBreakdownViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4873A90174442FA00665ABA /* CharacterBreakdownViewController.m */; };
 		C4873A93174442FB00665ABA /* CharacterBreakdownViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4873A91174442FB00665ABA /* CharacterBreakdownViewController.xib */; };
-		C4975DCE1742C3CF003287C4 /* cjk-decomp-0.4.0.txt in Resources */ = {isa = PBXBuildFile; fileRef = C4975DCD1742C3CF003287C4 /* cjk-decomp-0.4.0.txt */; };
 		C4975DD11742C497003287C4 /* DecompEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = C4975DD01742C497003287C4 /* DecompEntry.m */; };
 		C4975DD41742C4AF003287C4 /* DictEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = C4975DD31742C4AF003287C4 /* DictEntry.m */; };
 		C4975DEE1742D1EE003287C4 /* BlackSwirl3.png in Resources */ = {isa = PBXBuildFile; fileRef = C4975DD51742D1EE003287C4 /* BlackSwirl3.png */; };
@@ -111,17 +121,8 @@
 		C4975DF01742D1EE003287C4 /* Box2.png in Resources */ = {isa = PBXBuildFile; fileRef = C4975DD71742D1EE003287C4 /* Box2.png */; };
 		C4975DF11742D1EE003287C4 /* Box3.png in Resources */ = {isa = PBXBuildFile; fileRef = C4975DD81742D1EE003287C4 /* Box3.png */; };
 		C4975DF21742D1EE003287C4 /* Bubble.png in Resources */ = {isa = PBXBuildFile; fileRef = C4975DD91742D1EE003287C4 /* Bubble.png */; };
-		C4975DF31742D1EE003287C4 /* BubbleGameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4975DDB1742D1EE003287C4 /* BubbleGameViewController.m */; };
-		C4975DF41742D1EE003287C4 /* BubbleGameViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4975DDC1742D1EE003287C4 /* BubbleGameViewController.xib */; };
-		C4975DF51742D1EE003287C4 /* BubbleView.m in Sources */ = {isa = PBXBuildFile; fileRef = C4975DDE1742D1EE003287C4 /* BubbleView.m */; };
-		C4975DF61742D1EE003287C4 /* CCRMemoryCardCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C4975DE01742D1EE003287C4 /* CCRMemoryCardCell.m */; };
-		C4975DF71742D1EE003287C4 /* CCRViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4975DE21742D1EE003287C4 /* CCRViewController.m */; };
-		C4975DF81742D1EE003287C4 /* CCRViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4975DE31742D1EE003287C4 /* CCRViewController.xib */; };
-		C4975DF91742D1EE003287C4 /* CGCViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4975DE51742D1EE003287C4 /* CGCViewController.m */; };
-		C4975DFA1742D1EE003287C4 /* CGCViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4975DE61742D1EE003287C4 /* CGCViewController.xib */; };
 		C4975DFB1742D1EE003287C4 /* FlipCard.wav in Resources */ = {isa = PBXBuildFile; fileRef = C4975DE71742D1EE003287C4 /* FlipCard.wav */; };
 		C4975DFC1742D1EE003287C4 /* GrowlingDog.wav in Resources */ = {isa = PBXBuildFile; fileRef = C4975DE81742D1EE003287C4 /* GrowlingDog.wav */; };
-		C4975DFD1742D1EE003287C4 /* MemoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4975DE91742D1EE003287C4 /* MemoryCell.xib */; };
 		C4975DFE1742D1EE003287C4 /* PurringCat.wav in Resources */ = {isa = PBXBuildFile; fileRef = C4975DEA1742D1EE003287C4 /* PurringCat.wav */; };
 		C4975DFF1742D1EE003287C4 /* SlideCard2.wav in Resources */ = {isa = PBXBuildFile; fileRef = C4975DEB1742D1EE003287C4 /* SlideCard2.wav */; };
 		C4975E001742D1EE003287C4 /* SquareWithDogs.png in Resources */ = {isa = PBXBuildFile; fileRef = C4975DEC1742D1EE003287C4 /* SquareWithDogs.png */; };
@@ -147,6 +148,22 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		8362F1AA174560AC007BD369 /* BubbleGameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BubbleGameViewController.h; sourceTree = "<group>"; };
+		8362F1AB174560AD007BD369 /* BubbleGameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BubbleGameViewController.m; sourceTree = "<group>"; };
+		8362F1AC174560AD007BD369 /* BubbleGameViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BubbleGameViewController.xib; sourceTree = "<group>"; };
+		8362F1AD174560AD007BD369 /* BubbleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BubbleView.h; sourceTree = "<group>"; };
+		8362F1AE174560AD007BD369 /* BubbleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BubbleView.m; sourceTree = "<group>"; };
+		8362F1AF174560AD007BD369 /* CCRMemoryCardCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCRMemoryCardCell.h; sourceTree = "<group>"; };
+		8362F1B0174560AD007BD369 /* CCRMemoryCardCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCRMemoryCardCell.m; sourceTree = "<group>"; };
+		8362F1B1174560AD007BD369 /* CCRViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCRViewController.h; sourceTree = "<group>"; };
+		8362F1B2174560AD007BD369 /* CCRViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCRViewController.m; sourceTree = "<group>"; };
+		8362F1B3174560AE007BD369 /* CCRViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CCRViewController.xib; sourceTree = "<group>"; };
+		8362F1B4174560AE007BD369 /* CGCViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGCViewController.h; sourceTree = "<group>"; };
+		8362F1B5174560AE007BD369 /* CGCViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CGCViewController.m; sourceTree = "<group>"; };
+		8362F1B6174560AE007BD369 /* CGCViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CGCViewController.xib; sourceTree = "<group>"; };
+		8362F1B7174560AE007BD369 /* Instructions.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Instructions.png; sourceTree = "<group>"; };
+		8362F1B8174560AE007BD369 /* MemoryCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MemoryCell.xib; sourceTree = "<group>"; };
+		C40D568A1746E49800E50797 /* decompDB.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = decompDB.txt; sourceTree = "<group>"; };
 		C42DECA0173647B1008EAD0F /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
 		C42DECA3173647C4008EAD0F /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		C42DECA7173649B0008EAD0F /* retinaIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = retinaIcon.png; sourceTree = "<group>"; };
@@ -301,7 +318,6 @@
 		C4873A8F174442FA00665ABA /* CharacterBreakdownViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CharacterBreakdownViewController.h; sourceTree = "<group>"; };
 		C4873A90174442FA00665ABA /* CharacterBreakdownViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CharacterBreakdownViewController.m; sourceTree = "<group>"; };
 		C4873A91174442FB00665ABA /* CharacterBreakdownViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CharacterBreakdownViewController.xib; sourceTree = "<group>"; };
-		C4975DCD1742C3CF003287C4 /* cjk-decomp-0.4.0.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "cjk-decomp-0.4.0.txt"; sourceTree = "<group>"; };
 		C4975DCF1742C497003287C4 /* DecompEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DecompEntry.h; sourceTree = "<group>"; };
 		C4975DD01742C497003287C4 /* DecompEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DecompEntry.m; sourceTree = "<group>"; };
 		C4975DD21742C4AF003287C4 /* DictEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DictEntry.h; sourceTree = "<group>"; };
@@ -311,22 +327,8 @@
 		C4975DD71742D1EE003287C4 /* Box2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Box2.png; sourceTree = "<group>"; };
 		C4975DD81742D1EE003287C4 /* Box3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Box3.png; sourceTree = "<group>"; };
 		C4975DD91742D1EE003287C4 /* Bubble.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bubble.png; sourceTree = "<group>"; };
-		C4975DDA1742D1EE003287C4 /* BubbleGameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BubbleGameViewController.h; sourceTree = "<group>"; };
-		C4975DDB1742D1EE003287C4 /* BubbleGameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BubbleGameViewController.m; sourceTree = "<group>"; };
-		C4975DDC1742D1EE003287C4 /* BubbleGameViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BubbleGameViewController.xib; sourceTree = "<group>"; };
-		C4975DDD1742D1EE003287C4 /* BubbleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BubbleView.h; sourceTree = "<group>"; };
-		C4975DDE1742D1EE003287C4 /* BubbleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BubbleView.m; sourceTree = "<group>"; };
-		C4975DDF1742D1EE003287C4 /* CCRMemoryCardCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCRMemoryCardCell.h; sourceTree = "<group>"; };
-		C4975DE01742D1EE003287C4 /* CCRMemoryCardCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCRMemoryCardCell.m; sourceTree = "<group>"; };
-		C4975DE11742D1EE003287C4 /* CCRViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCRViewController.h; sourceTree = "<group>"; };
-		C4975DE21742D1EE003287C4 /* CCRViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCRViewController.m; sourceTree = "<group>"; };
-		C4975DE31742D1EE003287C4 /* CCRViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CCRViewController.xib; sourceTree = "<group>"; };
-		C4975DE41742D1EE003287C4 /* CGCViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGCViewController.h; sourceTree = "<group>"; };
-		C4975DE51742D1EE003287C4 /* CGCViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CGCViewController.m; sourceTree = "<group>"; };
-		C4975DE61742D1EE003287C4 /* CGCViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CGCViewController.xib; sourceTree = "<group>"; };
 		C4975DE71742D1EE003287C4 /* FlipCard.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = FlipCard.wav; sourceTree = "<group>"; };
 		C4975DE81742D1EE003287C4 /* GrowlingDog.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = GrowlingDog.wav; sourceTree = "<group>"; };
-		C4975DE91742D1EE003287C4 /* MemoryCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MemoryCell.xib; sourceTree = "<group>"; };
 		C4975DEA1742D1EE003287C4 /* PurringCat.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = PurringCat.wav; sourceTree = "<group>"; };
 		C4975DEB1742D1EE003287C4 /* SlideCard2.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = SlideCard2.wav; sourceTree = "<group>"; };
 		C4975DEC1742D1EE003287C4 /* SquareWithDogs.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SquareWithDogs.png; sourceTree = "<group>"; };
@@ -425,7 +427,7 @@
 				C468BBF717358B5800253DC0 /* ExternalLibraries */,
 				C468BB7C1734F4C200253DC0 /* cedict_ts.u8 */,
 				C4975E0217432DDA003287C4 /* radicalListWithMeaning.txt */,
-				C4975DCD1742C3CF003287C4 /* cjk-decomp-0.4.0.txt */,
+				C40D568A1746E49800E50797 /* decompDB.txt */,
 				C468BB711734F48D00253DC0 /* CustomButtons */,
 				C468BAFF1734F13C00253DC0 /* CustomViewControllers */,
 				C468BAA01734EAA400253DC0 /* AppDelegate.h */,
@@ -728,22 +730,23 @@
 				C4975DD71742D1EE003287C4 /* Box2.png */,
 				C4975DD81742D1EE003287C4 /* Box3.png */,
 				C4975DD91742D1EE003287C4 /* Bubble.png */,
-				C4975DDA1742D1EE003287C4 /* BubbleGameViewController.h */,
-				C4975DDB1742D1EE003287C4 /* BubbleGameViewController.m */,
-				C4975DDC1742D1EE003287C4 /* BubbleGameViewController.xib */,
-				C4975DDD1742D1EE003287C4 /* BubbleView.h */,
-				C4975DDE1742D1EE003287C4 /* BubbleView.m */,
-				C4975DDF1742D1EE003287C4 /* CCRMemoryCardCell.h */,
-				C4975DE01742D1EE003287C4 /* CCRMemoryCardCell.m */,
-				C4975DE11742D1EE003287C4 /* CCRViewController.h */,
-				C4975DE21742D1EE003287C4 /* CCRViewController.m */,
-				C4975DE31742D1EE003287C4 /* CCRViewController.xib */,
-				C4975DE41742D1EE003287C4 /* CGCViewController.h */,
-				C4975DE51742D1EE003287C4 /* CGCViewController.m */,
-				C4975DE61742D1EE003287C4 /* CGCViewController.xib */,
+				8362F1AA174560AC007BD369 /* BubbleGameViewController.h */,
+				8362F1AB174560AD007BD369 /* BubbleGameViewController.m */,
+				8362F1AC174560AD007BD369 /* BubbleGameViewController.xib */,
+				8362F1AD174560AD007BD369 /* BubbleView.h */,
+				8362F1AE174560AD007BD369 /* BubbleView.m */,
+				8362F1AF174560AD007BD369 /* CCRMemoryCardCell.h */,
+				8362F1B0174560AD007BD369 /* CCRMemoryCardCell.m */,
+				8362F1B1174560AD007BD369 /* CCRViewController.h */,
+				8362F1B2174560AD007BD369 /* CCRViewController.m */,
+				8362F1B3174560AE007BD369 /* CCRViewController.xib */,
+				8362F1B4174560AE007BD369 /* CGCViewController.h */,
+				8362F1B5174560AE007BD369 /* CGCViewController.m */,
+				8362F1B6174560AE007BD369 /* CGCViewController.xib */,
+				8362F1B7174560AE007BD369 /* Instructions.png */,
+				8362F1B8174560AE007BD369 /* MemoryCell.xib */,
 				C4975DE71742D1EE003287C4 /* FlipCard.wav */,
 				C4975DE81742D1EE003287C4 /* GrowlingDog.wav */,
-				C4975DE91742D1EE003287C4 /* MemoryCell.xib */,
 				C4975DEA1742D1EE003287C4 /* PurringCat.wav */,
 				C4975DEB1742D1EE003287C4 /* SlideCard2.wav */,
 				C4975DEC1742D1EE003287C4 /* SquareWithDogs.png */,
@@ -838,24 +841,25 @@
 				C42DECA1173647B2008EAD0F /* icon.png in Resources */,
 				C42DECA8173649B0008EAD0F /* retinaIcon.png in Resources */,
 				C42DECB017364FF0008EAD0F /* background.png in Resources */,
-				C4975DCE1742C3CF003287C4 /* cjk-decomp-0.4.0.txt in Resources */,
 				C4975DEE1742D1EE003287C4 /* BlackSwirl3.png in Resources */,
 				C4975DEF1742D1EE003287C4 /* Box1.png in Resources */,
 				C4975DF01742D1EE003287C4 /* Box2.png in Resources */,
 				C4975DF11742D1EE003287C4 /* Box3.png in Resources */,
 				C4975DF21742D1EE003287C4 /* Bubble.png in Resources */,
-				C4975DF41742D1EE003287C4 /* BubbleGameViewController.xib in Resources */,
-				C4975DF81742D1EE003287C4 /* CCRViewController.xib in Resources */,
-				C4975DFA1742D1EE003287C4 /* CGCViewController.xib in Resources */,
 				C4975DFB1742D1EE003287C4 /* FlipCard.wav in Resources */,
 				C4975DFC1742D1EE003287C4 /* GrowlingDog.wav in Resources */,
-				C4975DFD1742D1EE003287C4 /* MemoryCell.xib in Resources */,
 				C4975DFE1742D1EE003287C4 /* PurringCat.wav in Resources */,
 				C4975DFF1742D1EE003287C4 /* SlideCard2.wav in Resources */,
 				C4975E001742D1EE003287C4 /* SquareWithDogs.png in Resources */,
 				C4975E011742D1EE003287C4 /* Yellowcard.png in Resources */,
 				C4975E0317432DDB003287C4 /* radicalListWithMeaning.txt in Resources */,
 				C4873A93174442FB00665ABA /* CharacterBreakdownViewController.xib in Resources */,
+				8362F1BA174560AE007BD369 /* BubbleGameViewController.xib in Resources */,
+				8362F1BE174560AE007BD369 /* CCRViewController.xib in Resources */,
+				8362F1C0174560AE007BD369 /* CGCViewController.xib in Resources */,
+				8362F1C1174560AE007BD369 /* Instructions.png in Resources */,
+				8362F1C2174560AE007BD369 /* MemoryCell.xib in Resources */,
+				C40D568B1746E49800E50797 /* decompDB.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -962,13 +966,13 @@
 				C4A02F1A17372358002191CD /* FlatLabel.m in Sources */,
 				C4975DD11742C497003287C4 /* DecompEntry.m in Sources */,
 				C4975DD41742C4AF003287C4 /* DictEntry.m in Sources */,
-				C4975DF31742D1EE003287C4 /* BubbleGameViewController.m in Sources */,
-				C4975DF51742D1EE003287C4 /* BubbleView.m in Sources */,
-				C4975DF61742D1EE003287C4 /* CCRMemoryCardCell.m in Sources */,
-				C4975DF71742D1EE003287C4 /* CCRViewController.m in Sources */,
-				C4975DF91742D1EE003287C4 /* CGCViewController.m in Sources */,
 				C4975E0617432E4F003287C4 /* RadicalEntry.m in Sources */,
 				C4873A92174442FB00665ABA /* CharacterBreakdownViewController.m in Sources */,
+				8362F1B9174560AE007BD369 /* BubbleGameViewController.m in Sources */,
+				8362F1BB174560AE007BD369 /* BubbleView.m in Sources */,
+				8362F1BC174560AE007BD369 /* CCRMemoryCardCell.m in Sources */,
+				8362F1BD174560AE007BD369 /* CCRViewController.m in Sources */,
+				8362F1BF174560AE007BD369 /* CGCViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

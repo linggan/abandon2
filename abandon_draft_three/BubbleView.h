@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <AVFoundation/AVFoundation.h>
 
 @interface BubbleView : UIButton
 
@@ -14,10 +15,12 @@
 
 @property (nonatomic) Boolean floatingDown;
 @property (nonatomic) NSInteger xDirection;
-@property (nonatomic) Boolean moving;
+@property (nonatomic) Boolean moving; //This tells the bubble if it should move around or not, only set to yes when the bubble is grabbed.
 @property (nonatomic) NSInteger sizeOfBubble;
 
 @property (nonatomic, strong) NSObject *thisBubbleWord;
+
+@property (nonatomic, strong) AVAudioPlayer *recordingPlayer;
 
 -(void)bubbleGrabbed;
 -(void)bubbleReleased;

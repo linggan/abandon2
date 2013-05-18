@@ -8,24 +8,23 @@
 
 #import "CharacterBreakdownViewController.h"
 
-@interface CharacterBreakdownViewController ()
-
-@end
-
-@implementation CharacterBreakdownViewController
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
+@implementation CharacterBreakdownViewController{
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    CGSize maximumLabelSize = CGSizeMake(296, FLT_MAX);
+    
+    CGSize expectedLabelSize = [_text sizeWithFont:_breakdown.font constrainedToSize:maximumLabelSize lineBreakMode:_breakdown.lineBreakMode];
+    
+    //adjust the label the the new height.
+    CGRect newFrame = _breakdown.frame;
+    newFrame.size.height = expectedLabelSize.height;
+    _breakdown.frame = newFrame;
+    //_scrollView.frame = newFrame;
+    
     [_breakdown setText:_text];
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
     tapGesture.numberOfTapsRequired = 2;

@@ -11,6 +11,7 @@
 #import <AVFoundation/AVFoundation.h>
 #import "CoreDataDelegate.h"
 
+
 @protocol CharacterInfoViewControllerDelegate <NSObject>
 - (void)didDeleteWord: (NSManagedObject *)word;
 @end
@@ -37,6 +38,6 @@
 
 
 
-- (IBAction)dismissScreen:(id)sender;
+- (void)dismissScreen;
 
 @end

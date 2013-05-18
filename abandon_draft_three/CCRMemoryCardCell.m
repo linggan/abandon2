@@ -51,7 +51,7 @@
         [UIView setAnimationDuration:FLIP_TIME];
         [UIView setAnimationDelegate:self];
         [self playCardFlipSound];
-        [self.audioPlayer2 stop];
+        [self.recordingPlayer stop];
         
         [self clearData]; //Deletes info
         
@@ -63,7 +63,7 @@
 {
     if ([[notification object] getStoredClass] != self.storedClass)
     {
-        [self.audioPlayer2 stop];
+        [self.recordingPlayer stop];
     }
     
     if (self.prevCardType == 2)
@@ -109,14 +109,14 @@
         [self sizeLabel:self.pronunciation toRect:rectForLabelBottom];
     }
     
-    self.word.numberOfLines = 1;
+    self.word.numberOfLines = 0;
     [self sizeLabel:self.word toRect:rectForLabelTop];
     
     
     [self.button setImage:self.frontOfCard forState:UIControlStateNormal];
 }
 
--(NSString*)parseEnglishToSlash:(NSString *)englishWord
+-(NSString*)parseEnglishToSlash:(NSString *)englishWord //shortens the english definition to only stuff before parenthesis
 {
     for (int i=0; i<englishWord.length;i++)
     {
@@ -133,7 +133,6 @@
 -(void)clearData //Just clears the info in a cell, doesn't remove it.
 {
     [self.button setImage:self.backOfCard forState:UIControlStateNormal];
-    self.picRepresentation.image = nil;
     self.pronunciation.text = @"";
     self.word.text = @"";
     
@@ -148,7 +147,7 @@
     label.frame = labelRect;
     
     // Try all font sizes from largest to smallest font size
-    int fontSize = 16;
+    int fontSize = 40;
     int minFontSize = 5;
     
     // Fit label width wize
@@ -173,11 +172,6 @@
     } while (fontSize > minFontSize);    
 }
 
--(NSObject *)getStoredClass
-{
-    return self.storedClass;
-}
-
 -(void)getRidOfCell //Removes the cell entirely, to be used when it's matched with another cell.
 {
     CGPoint animateToPoint = CGPointMake(-60, 100);
@@ -185,7 +179,7 @@
     [UIView setAnimationTransition:UIViewAnimationOptionCurveLinear forView:self cache:NO];
     [UIView setAnimationDuration:FLY_TIME];
     [UIView setAnimationDelegate:self];
-    [self.audioPlayer2 stop];
+    [self.recordingPlayer stop];
         
     [self setCenter:animateToPoint];
     [UIView commitAnimations];
@@ -213,6 +207,11 @@
     [UIView commitAnimations];
 }
 
+-(NSObject *)getStoredClass
+{
+    return self.storedClass;
+}
+
 -(NSInteger)getCardType
 {
     return self.cardType;
@@ -222,9 +221,9 @@
 {
     NSURL *url = [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@/FlipCard.wav", [[NSBundle mainBundle] resourcePath]]];
     NSError *error = nil;
-    self.audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:&error];
-    self.audioPlayer.volume = 0.1;
-    [self.audioPlayer play];
+    self.soundEffectsPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:&error];
+    self.soundEffectsPlayer.volume = 0.1;
+    [self.soundEffectsPlayer play];
 }
 
 -(void)playRecording
@@ -245,9 +244,9 @@
     if (url!=nil)
     {
         NSError *error = nil;
-        self.audioPlayer2 = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:&error];
-        self.audioPlayer2.volume = 1.0;
-        [self.audioPlayer2 play];
+        self.recordingPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:&error];
+        self.recordingPlayer.volume = 1.0;
+        [self.recordingPlayer play];
     }
 }
 

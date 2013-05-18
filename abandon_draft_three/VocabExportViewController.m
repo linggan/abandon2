@@ -115,6 +115,14 @@
         // Export Finished
         NSLog(@"successfully export to folder: %@", output);
     }];
+    
+    
+    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Exported!" message:@"You can find your new vocab list under the App tab in iTunes." delegate:self cancelButtonTitle:@"Aw yeahh" otherButtonTitles:nil];
+    alert.alertViewStyle = UIAlertViewStylePlainTextInput;
+    UITextField * alertTextField = [alert textFieldAtIndex:0];
+    alertTextField.keyboardType = UIKeyboardTypeAlphabet;
+    [alert show];
+    
     [[self navigationController] popViewControllerAnimated:YES];
 }
 
