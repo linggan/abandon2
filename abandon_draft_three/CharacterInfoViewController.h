@@ -14,6 +14,8 @@
 
 @protocol CharacterInfoViewControllerDelegate <NSObject>
 - (void)didDeleteWord: (NSManagedObject *)word;
+- (NSManagedObject *)getWordBeforeThis: (NSManagedObject *)word;
+- (NSManagedObject *)getWordAfterThis: (NSManagedObject *)word;
 @end
 
 
@@ -30,6 +32,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *helpLabelFour;
 
 @property (retain, nonatomic) NSManagedObject *word;
+
 @property (retain, nonatomic) AVAudioPlayer *player;
 @property (nonatomic, assign) id<ModalViewDelegate> modalDelegate;
 @property (nonatomic, assign) id<CoreDataDelegate> dataDelegate;

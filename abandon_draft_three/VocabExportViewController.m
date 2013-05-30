@@ -18,7 +18,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self getWords:self];
+    _wordList = [[self dataDelegate] getAllWords];
     [self setVocabList:[[NSMutableArray alloc] init]];
     
     MGScrollView *scroller = [MGScrollView scrollerWithSize:self.view.bounds.size];
@@ -65,11 +65,13 @@
     [scroller scrollToView:grid withMargin:10];
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Menu" style:UIBarButtonItemStyleBordered target:self.navigationController action:@selector(toggleMenu)];
+    
+    if (![_wordList count]) {
+        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Hmmm..." message:@"It seems you haven't recorded any words yet." delegate:self cancelButtonTitle:@"Aw" otherButtonTitles:nil];
+        [alert show];
+    }
 
-}
 
--(void)getWords:(id)ViewController{
-    _wordList = [[self dataDelegate] getAllWords];
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
@@ -90,41 +92,53 @@
 
 - (void)didSelectDone
 {
-    AVMutableComposition *composition = [[AVMutableComposition alloc] init];
-    
-    NSString *output = [[NSHomeDirectory() stringByAppendingString:@"/Documents/"] stringByAppendingString:[NSString stringWithFormat:@"%@.m4a", _vocabListName]];
-    CMTime currentTrackTime = kCMTimeZero;
-    
-    for (id word in _vocabList){        
-        AVURLAsset *chineseTrack = [AVURLAsset URLAssetWithURL:[NSURL fileURLWithPath:[word valueForKey:@"chineseRecording"]] options:nil];
-        AVURLAsset *englishTrack = [AVURLAsset URLAssetWithURL:[NSURL fileURLWithPath:[word valueForKey:@"englishRecording"]] options:nil];
+    if ([_vocabList count] > 0){
+        AVMutableComposition *composition = [[AVMutableComposition alloc] init];
         
-        AVMutableCompositionTrack *compositionTrack01 = [composition addMutableTrackWithMediaType:AVMediaTypeAudio preferredTrackID:kCMPersistentTrackID_Invalid];
-        [compositionTrack01 insertTimeRange:CMTimeRangeMake(kCMTimeZero, chineseTrack.duration) ofTrack:[[chineseTrack tracksWithMediaType:AVMediaTypeAudio] objectAtIndex:0] atTime:currentTrackTime error:nil];
-        AVMutableCompositionTrack *compositionTrack02 = [composition addMutableTrackWithMediaType:AVMediaTypeAudio preferredTrackID:kCMPersistentTrackID_Invalid];
-        [compositionTrack02 insertTimeRange:CMTimeRangeMake(kCMTimeZero, englishTrack.duration) ofTrack:[[englishTrack tracksWithMediaType:AVMediaTypeAudio] objectAtIndex:0] atTime:CMTimeAdd(currentTrackTime, chineseTrack.duration) error:nil];
+        NSString *output = [[NSHomeDirectory() stringByAppendingString:@"/Documents/"] stringByAppendingString:[NSString stringWithFormat:@"%@.m4a", _vocabListName]];
+        CMTime currentTrackTime = kCMTimeZero;
         
-        currentTrackTime = CMTimeAdd(CMTimeAdd(chineseTrack.duration, englishTrack.duration), currentTrackTime);
+        for (id word in _vocabList){        
+            AVURLAsset *chineseTrack = [AVURLAsset URLAssetWithURL:[NSURL fileURLWithPath:[word valueForKey:@"chineseRecording"]] options:nil];
+            AVURLAsset *englishTrack = [AVURLAsset URLAssetWithURL:[NSURL fileURLWithPath:[word valueForKey:@"englishRecording"]] options:nil];
+            
+            AVMutableCompositionTrack *compositionTrack01 = [composition addMutableTrackWithMediaType:AVMediaTypeAudio preferredTrackID:kCMPersistentTrackID_Invalid];
+            [compositionTrack01 insertTimeRange:CMTimeRangeMake(kCMTimeZero, chineseTrack.duration) ofTrack:[[chineseTrack tracksWithMediaType:AVMediaTypeAudio] objectAtIndex:0] atTime:currentTrackTime error:nil];
+            AVMutableCompositionTrack *compositionTrack02 = [composition addMutableTrackWithMediaType:AVMediaTypeAudio preferredTrackID:kCMPersistentTrackID_Invalid];
+            [compositionTrack02 insertTimeRange:CMTimeRangeMake(kCMTimeZero, englishTrack.duration) ofTrack:[[englishTrack tracksWithMediaType:AVMediaTypeAudio] objectAtIndex:0] atTime:CMTimeAdd(currentTrackTime, chineseTrack.duration) error:nil];
+            
+            currentTrackTime = CMTimeAdd(CMTimeAdd(chineseTrack.duration, englishTrack.duration), currentTrackTime);
+        }
+        
+        AVAssetExportSession *exporter = [[AVAssetExportSession alloc] initWithAsset:composition presetName:AVAssetExportPresetAppleM4A];
+        exporter.outputURL = [NSURL fileURLWithPath:output];
+        exporter.outputFileType = AVFileTypeAppleM4A;
+        
+        [exporter exportAsynchronouslyWithCompletionHandler:^{
+            // Export Finished
+            NSLog(@"successfully export to folder: %@", output);
+        }];
+        
+        [[self dataDelegate] addToDatabaseVocabListContainingWords:_vocabList WithName:_vocabListName andFileURL:output];
+        
+        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Exported!" message:@"You can find your new list in the vocabulary list menu." delegate:self cancelButtonTitle:@"Aw yeahh" otherButtonTitles:nil];
+        [alert show];
+        
     }
     
-    AVAssetExportSession *exporter = [[AVAssetExportSession alloc] initWithAsset:composition presetName:AVAssetExportPresetAppleM4A];
-    exporter.outputURL = [NSURL fileURLWithPath:output];
-    exporter.outputFileType = AVFileTypeAppleM4A;
-    
-    [exporter exportAsynchronouslyWithCompletionHandler:^{
-        // Export Finished
-        NSLog(@"successfully export to folder: %@", output);
-    }];
-    
-    
-    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Exported!" message:@"You can find your new vocab list under the App tab in iTunes." delegate:self cancelButtonTitle:@"Aw yeahh" otherButtonTitles:nil];
-    alert.alertViewStyle = UIAlertViewStylePlainTextInput;
-    UITextField * alertTextField = [alert textFieldAtIndex:0];
-    alertTextField.keyboardType = UIKeyboardTypeAlphabet;
-    [alert show];
-    
-    [[self navigationController] popViewControllerAnimated:YES];
+    else{
+        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"But..." message:@"You didn't choose any words." delegate:self cancelButtonTitle:@"Awkward." otherButtonTitles:nil];
+        [alert show];
+
+    }
 }
+
+-(void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    if (buttonIndex == 0) {
+        [[self navigationController] popViewControllerAnimated:YES];
+    }
+}
+
 
 
 

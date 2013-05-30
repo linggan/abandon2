@@ -20,6 +20,7 @@
 #import "DictEntry.h"
 #import "DecompEntry.h"
 #import "RadicalEntry.h"
+#import "VocabList.h"
 
 @implementation AppDelegate{
     RootViewController *RootVC;
@@ -63,19 +64,29 @@
 
 }
 
--(void)deleteData{
+-(void)deleteDataForObject:(NSString *)entityName{
     
     NSManagedObjectContext *context = [NSManagedObjectContext MR_contextForCurrentThread];
-    /*
-    NSArray *words = [Word MR_findAll];
+    NSArray *objects;
     
-    for (id word in words){
-        [context deleteObject:word];
-    }*/
-    NSArray *words = [DecompEntry MR_findAll];
+    if ([entityName isEqualToString:@"Word"]){
+        objects = [Word MR_findAll];
+    }
     
-    for (id word in words){
-        [context deleteObject:word];
+    if ([entityName isEqualToString:@"RadicalEntry"]){
+        objects = [RadicalEntry MR_findAll];
+    }
+    
+    if ([entityName isEqualToString:@"DictEntry"]){
+        objects = [DictEntry MR_findAll];
+    }
+    
+    if ([entityName isEqualToString:@"DecompEntry"]){
+        objects = [DecompEntry MR_findAll];
+    }
+    
+    for (id object in objects){
+        [context deleteObject:object];
     }
     
     [self saveContext];
@@ -131,6 +142,9 @@
         //the +1 and -1 are to trim the brackets and slashes from the resulting strings
         NSString *pinyin = [currentEntry substringWithRange:NSMakeRange(bracketOne.location+1, bracketTwo.location-bracketOne.location-1)];
         NSString *english = [currentEntry substringWithRange:NSMakeRange(slashOne.location+1, slashTwo.location-slashOne.location-1)];
+        
+        if ([english rangeOfString:@"surname"].location == 0) //don't include defitionis about surnames
+            continue;
         
         DictEntry *wordObject = [DictEntry MR_createEntity];
         [wordObject setValue: trad forKey:@"traditional"];
@@ -264,8 +278,6 @@
             finalString = [finalString stringByAppendingString:[NSString stringWithFormat:@"\t\t\t\t%@: %@\n", character, entryForDecomp]];
             continue;}
 
-         if (!entryForRadical && !entryForDecomp)
-             finalString = [finalString stringByAppendingString:[NSString stringWithFormat:@"%@: not found", character]];
     }
 
     return finalString;
@@ -282,6 +294,12 @@
     
     return entryArray;
     
+}
+
+-(NSArray *)getAllVocabLists{
+    NSArray *vocabLists = [VocabList MR_findAll];
+    
+    return vocabLists;
 }
 
 
@@ -342,7 +360,14 @@
             for (NSString *character in stringBuffer){
                 dictEntry = [self lookUpCharacter:character][2];
                 if ([dictEntry rangeOfString:@"/"].location != NSNotFound){
-                    dictEntry = [dictEntry substringToIndex:[dictEntry rangeOfString:@"/"].location];
+                    //if the definition is just a surname, skip it (as that's not really useful)
+                    if (![[[dictEntry componentsSeparatedByString:@" "] objectAtIndex:0] isEqualToString:@"surname"])
+                        dictEntry = [dictEntry substringToIndex:[dictEntry rangeOfString:@"/"].location];
+                    else{
+                        dictEntry = [dictEntry substringFromIndex:[dictEntry rangeOfString:@"/"].location];
+                        dictEntry = [dictEntry substringToIndex:[dictEntry rangeOfString:@"/"].location];
+                    }
+                    
                 }
                 
                 decomposition = [self getComponentBreakdownOfCharacter:character];
@@ -414,5 +439,16 @@
     [self saveContext];
     
 }
+
+-(void)addToDatabaseVocabListContainingWords: (NSMutableArray *) wordArray WithName: (NSString *)name andFileURL:(NSString *) URLstring {
+    VocabList *newList = [VocabList MR_createEntity];
+    [newList setValue:name forKey:@"name"];
+    [newList setValue:URLstring forKey:@"recordingURL"];
+    NSMutableSet *wordSet = [VocabList mutableSetValueForKey:@"wordsInList"];
+    //[wordSet addObjectsFromArray:wordArray];
+    
+    [self saveContext];
+}
+
 
 @end

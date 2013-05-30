@@ -23,7 +23,6 @@
     CGRect newFrame = _breakdown.frame;
     newFrame.size.height = expectedLabelSize.height;
     _breakdown.frame = newFrame;
-    //_scrollView.frame = newFrame;
     
     [_breakdown setText:_text];
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];

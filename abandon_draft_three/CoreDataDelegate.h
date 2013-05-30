@@ -15,6 +15,7 @@
 -(NSArray *)getAllUnrecordedWordsinQueue;
 -(NSString *)getComponentBreakdownOfCharacter:(NSString *)character;
 -(NSArray *)lookUpCharacter:(NSString *)character;
+-(NSArray *)getAllVocabLists;
 
 //setting/changing entries from coredata
 -(NSArray *)addToDatabaseDictEntryOfWord: (NSString *)word;
@@ -22,4 +23,5 @@
 -(void)deleteWordFromQueue:(NSString*)Word;
 -(void)deleteWordFromBank:(NSString*)word;
 -(void)storeAAC:(NSString *)URL ForWord:(NSString *)Word InLanguage:(NSString *)Language;
+-(void)addToDatabaseVocabListContainingWords: (NSMutableArray *) wordArray WithName: (NSString *)name andFileURL:(NSString *) URLstring;
 @end

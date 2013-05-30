@@ -18,6 +18,11 @@
         <attribute name="character" optional="YES" attributeType="String" indexed="YES" syncable="YES"/>
         <attribute name="translation" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
+    <entity name="VocabList" representedClassName="VocabList" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="recordingURL" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="wordsInList" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Word" syncable="YES"/>
+    </entity>
     <entity name="Word" representedClassName="Word" syncable="YES">
         <attribute name="chinese" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="chineseRecording" optional="YES" attributeType="String" syncable="YES"/>
@@ -34,5 +39,6 @@
         <element name="Queue" positionX="160" positionY="192" width="128" height="75"/>
         <element name="RadicalEntry" positionX="160" positionY="192" width="128" height="75"/>
         <element name="Word" positionX="160" positionY="192" width="128" height="165"/>
+        <element name="VocabList" positionX="160" positionY="192" width="128" height="90"/>
     </elements>
 </model>

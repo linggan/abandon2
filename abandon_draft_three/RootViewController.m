@@ -119,7 +119,6 @@
         dispatch_async(searchQueue, ^{
             
             entryFound = [[self dataDelegate] addToDatabaseDictEntryOfWord:word];
-            [NSThread sleepForTimeInterval:0.03];
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 [spinner stopAnimating];

@@ -17,25 +17,18 @@
     BOOL helpVisible;
 }
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-    //set labels
-    [_chinese setText:[_word valueForKey:@"chinese"]];
-    [_pinyin setText:[_word valueForKey:@"pinyin"]];
-    [_english setText:[_word valueForKey:@"english"]];
-    [_breakdown setText:[_word valueForKey:@"firstDecomp"]];
-    [_mnemonic setText:[_word valueForKey:@"mnemonic"]];
+    [self setEverything];
+    
+    //init audio player and sesson
+    AVAudioSession *session = [AVAudioSession sharedInstance];
+    NSError *sessionsError;
+    [session setCategory:AVAudioSessionCategoryPlayback error:&sessionsError];
+    [session setActive:YES error:nil];
+
     
     //send help labels to back
     helpVisible = FALSE;
@@ -83,19 +76,7 @@
     [self.view addSubview:gottenButton];
     [gottenButton addTarget:self action:@selector(dismissScreen) forControlEvents:UIControlEventTouchDown];
 
-    //init audio player and sesson
-    AVAudioSession *session = [AVAudioSession sharedInstance];
-    NSError *sessionsError;
-    [session setCategory:AVAudioSessionCategoryPlayback error:&sessionsError];
-    [session setActive:YES error:nil];
 
-
-    if ([_word valueForKey:@"chineseRecording"]){
-        _player = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL fileURLWithPath:[_word valueForKey:@"chineseRecording"]] error:nil];
-        [_player setDelegate:self];
-        [_player prepareToPlay];
-    }
-    
     //all the gesture recognizers
     //double tap for breakdown
     UITapGestureRecognizer *decompTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleDecompTap:)];
@@ -109,22 +90,44 @@
                                    action:@selector(dismissKeyboard)];
     [self.view addGestureRecognizer:tap];
     
+    //tap to redo recording
+    UITapGestureRecognizer *recordTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleRecordTap:)];
+    recordTap.numberOfTapsRequired = 2;
+    recordTap.delegate = _chinese;
+    [[_chinese viewWithTag:0]addGestureRecognizer:recordTap];
+    
     //tap to play recording
     UITapGestureRecognizer *playTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handlePlayTap:)];
     playTap.numberOfTapsRequired = 1;
     playTap.delegate = _chinese;
     [[_chinese viewWithTag:0]addGestureRecognizer:playTap];
-    
-    /* //to incorporate later
-    //tap to redo recording
-    UITapGestureRecognizer *recordTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleRecordTap:)];
-    recordTap.numberOfTapsRequired = 1;
-    recordTap.numberOfTouchesRequired = 2;
-    recordTap.delegate = _chinese;
-    [[_chinese viewWithTag:0]addGestureRecognizer:recordTap];
-     */
+    [playTap requireGestureRecognizerToFail:recordTap];
+     
 
+    UISwipeGestureRecognizer *swipeRight = [[UISwipeGestureRecognizer alloc]initWithTarget:self action:@selector(handleSwipeRight: )];
+    [swipeRight setDirection:UISwipeGestureRecognizerDirectionRight];
+    [swipeRight setDelegate:self];
+    [[self view]addGestureRecognizer:swipeRight];
     
+    UISwipeGestureRecognizer *swipeLeft = [[UISwipeGestureRecognizer alloc]initWithTarget:self action:@selector(handleSwipeLeft: )];
+    [swipeLeft setDirection:UISwipeGestureRecognizerDirectionLeft];
+    [swipeLeft setDelegate:self];
+    [[self view]addGestureRecognizer:swipeLeft];
+    
+}
+
+-(void)setEverything{
+    [_chinese setText:[_word valueForKey:@"chinese"]];
+    [_pinyin setText:[_word valueForKey:@"pinyin"]];
+    [_english setText:[_word valueForKey:@"english"]];
+    [_breakdown setText:[_word valueForKey:@"firstDecomp"]];
+    [_mnemonic setText:[_word valueForKey:@"mnemonic"]];
+        
+    if ([_word valueForKey:@"chineseRecording"]){
+        _player = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL fileURLWithPath:[_word valueForKey:@"chineseRecording"]] error:nil];
+        [_player setDelegate:self];
+        [_player prepareToPlay];
+    }
 }
 
 - (BOOL)hasFourInchDisplay { //detects if it's 4in or 3.5 in. retina display
@@ -205,6 +208,31 @@
         controller.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
         controller.dataDelegate = self.dataDelegate;
         controller.wordList = @[_word];
+
+    }
+}
+
+- (void)handleSwipeRight:(UISwipeGestureRecognizer *)sender {
+    if (sender.state == UIGestureRecognizerStateRecognized) {
+        NSManagedObject *wordToSwipeTo = [[self delegate] getWordBeforeThis:_word];
+        
+        if (wordToSwipeTo){
+            _word = wordToSwipeTo;
+            [self setEverything];
+        }
+
+    }
+}
+
+- (void)handleSwipeLeft:(UISwipeGestureRecognizer *)sender {
+    if (sender.state == UIGestureRecognizerStateRecognized) {
+        NSManagedObject *wordToSwipeTo = [[self delegate] getWordAfterThis:_word];
+        
+        if (wordToSwipeTo){
+            _word = wordToSwipeTo;
+            [self setEverything];
+
+        }
 
     }
 }

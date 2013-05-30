@@ -7,7 +7,6 @@
 //
 
 #import "WordBankViewController.h"
-#import "MGScrollView.h"
 #import "CharacterInfoViewController.h"
 #import "FlatButton.h"
 #import "REMenu.h"
@@ -48,9 +47,10 @@
         
         wordTile.onTap = ^{
             CharacterInfoViewController *viewController = [[CharacterInfoViewController alloc]init];
-            [viewController setWord:word];
+            viewController.word = word;
             viewController.modalDelegate = self;
             viewController.dataDelegate = self.dataDelegate;
+            viewController.delegate = self;
             viewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
             [self presentViewController:viewController animated:YES completion:NULL];
         };
@@ -88,5 +88,26 @@
     [[self view] setNeedsDisplay];
     [_wordList removeObject:word];
 }
+
+
+
+- (NSManagedObject *)getWordBeforeThis: (NSManagedObject *)word{
+    int newWordIndex = [_wordList indexOfObject:word]-1;
+
+    if (newWordIndex < 0) return nil;
+    
+    return [_wordList objectAtIndex:newWordIndex];
+
+}
+
+- (NSManagedObject *)getWordAfterThis: (NSManagedObject *)word{
+    NSUInteger newWordIndex = [_wordList indexOfObject:word]+1;
+    
+    if (newWordIndex == [_wordList count]) return nil;
+    
+    return [_wordList objectAtIndex:newWordIndex];
+
+}
+
 
 @end

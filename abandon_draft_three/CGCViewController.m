@@ -37,7 +37,7 @@
     if (wordList.count <= 0) //If there's no words in the word bank, it complains to the user in an Alert View
     {
         NSLog(@"Alert View");
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Your word bank is empty!" message:@"Add more words you're making the kittens cry" delegate:self cancelButtonTitle:@"Fetch!" otherButtonTitles:nil];
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Hmmm" message:@"Your word bank is empty" delegate:self cancelButtonTitle:@"Add words!" otherButtonTitles:nil];
         alertView.tag = INAPP;
         [alertView show];
         return;
@@ -64,7 +64,14 @@
 }
 
 -(void)getWords:(id)ViewController{
-    wordList = [[self dataDelegate] getAllWords];
+    NSMutableArray *permutation = [[[self dataDelegate] getAllWords] mutableCopy];
+    for (int i = 0; i <[permutation count]; i++){
+        int random = arc4random()%[permutation count];
+        id temp = permutation[i];
+        [permutation setObject:permutation[random] atIndexedSubscript:i];
+        [permutation setObject:temp atIndexedSubscript:random];
+    }
+    wordList = permutation;
 }
 
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
@@ -87,7 +94,7 @@
     [self.imageView.image drawInRect:CGRectMake(0.0, 0.0, self.view.frame.size.width, self.view.frame.size.height)];
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextSetLineWidth(context, 4.0);
-    CGContextSetStrokeColorWithColor(context, [UIColor redColor].CGColor);
+    CGContextSetStrokeColorWithColor(context, [UIColor grayColor].CGColor);
     CGContextMoveToPoint(context, self.lastPoint.x, self.lastPoint.y);
     CGContextAddLineToPoint(context, self.currentPoint.x, self.currentPoint.y);
     self.lastPoint = self.currentPoint;
@@ -142,11 +149,6 @@
     else if (self.wordListTracker <= self.wordList.count-1)
     {
         UIImage *mostRecentImage = self.imageView.image;
-        if (mostRecentImage == nil) {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Don't be lazy!" message:@"Draw Something!" delegate:nil cancelButtonTitle:@"Fine" otherButtonTitles:nil, nil];
-            [alert show];
-            return;
-        }
         self.imageView.image = nil;
         [self.arrayOfDrawings addObject:mostRecentImage];
         self.wordListTracker ++;
@@ -157,7 +159,7 @@
         else {
             //Let's the user know we're done drawing.
             self.definition.text = @"";
-            self.infoDescription.text = @"DONE DRAWING!";
+            self.infoDescription.text = @"Finished all the words! Wow.";
             atLastWord = YES;
 
         }
