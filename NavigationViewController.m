@@ -10,7 +10,7 @@
 #import "FlatLabel.h"
 #import "RecordViewController.h"
 #import "VocabViewController.h"
-#import "CGCViewController.h"
+#import "TestViewController.h"
 
 
 @implementation NavigationViewController
@@ -44,9 +44,10 @@
     }];
     
     REMenuItem *reviewItem = [[REMenuItem alloc] initWithCustomView:practice action:^(REMenuItem *item){
-        CGCViewController *controller = [[CGCViewController alloc] init];
-        controller.dataDelegate = self.dataDelegate;
-        [weakSelf pushViewController:controller animated:YES];}];
+        TestViewController *controller = [[TestViewController alloc] init];
+        controller.wordList = [[self dataDelegate] getAllWords];
+        [weakSelf pushViewController:controller animated:YES];
+    }];
 
 
     _menu = [[REMenu alloc] initWithItems:@[recordItem, vocabItem, reviewItem]];

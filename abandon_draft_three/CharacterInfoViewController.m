@@ -32,10 +32,11 @@
     
     //send help labels to back
     helpVisible = FALSE;
-    [[self view] sendSubviewToBack:[self helpLabelOne]];
-    [[self view] sendSubviewToBack:[self helpLabelTwo]];
-    [[self view] sendSubviewToBack:[self helpLabelThree]];
-    [[self view] sendSubviewToBack:[self helpLabelFour]];
+    [_helpLabelOne setHidden:TRUE];
+    [_helpLabelTwo setHidden:TRUE];
+    [_helpLabelThree setHidden:TRUE];
+    [_helpLabelFour setHidden:TRUE];
+    [_helpLabelFive setHidden:TRUE];
     
     [_mnemonic setDelegate:self];
 
@@ -154,18 +155,22 @@
 -(void)makeHelpVisible{
     
     if (!helpVisible){
-        [[self view] bringSubviewToFront:[self helpLabelOne]];
-        [[self view] bringSubviewToFront:[self helpLabelTwo]];
-        [[self view] bringSubviewToFront:[self helpLabelThree]];
-        [[self view] bringSubviewToFront:[self helpLabelFour]];
+        [_helpLabelOne setHidden:FALSE];
+        [_helpLabelTwo setHidden:FALSE];
+        [_helpLabelThree setHidden:FALSE];
+        [_helpLabelFour setHidden:FALSE];
+        [_helpLabelFive setHidden:FALSE];
+
 
         helpVisible = TRUE;
     }
     else{
-        [[self view] sendSubviewToBack:[self helpLabelOne]];
-        [[self view] sendSubviewToBack:[self helpLabelTwo]];
-        [[self view] sendSubviewToBack:[self helpLabelThree]];
-        [[self view] sendSubviewToBack:[self helpLabelFour]];
+        [_helpLabelOne setHidden:TRUE];
+        [_helpLabelTwo setHidden:TRUE];
+        [_helpLabelThree setHidden:TRUE];
+        [_helpLabelFour setHidden:TRUE];
+        [_helpLabelFive setHidden:TRUE];
+
 
         helpVisible = FALSE;
 
@@ -208,6 +213,8 @@
         controller.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
         controller.dataDelegate = self.dataDelegate;
         controller.wordList = @[_word];
+        
+        [self presentViewController:controller animated:YES completion:NULL];
 
     }
 }

@@ -136,6 +136,8 @@
 -(void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     if (buttonIndex == 0) {
         [[self navigationController] popViewControllerAnimated:YES];
+        //        [[self modalDelegate] didDismissPresentedViewController];
+
     }
 }
 

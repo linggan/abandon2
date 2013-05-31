@@ -17,7 +17,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [_answer setText:_text];
+    [_answer setText:[_word valueForKey:@"chinese"]];
+    [_pinyin setText: [_word valueForKey:@"pinyin"]];
+    [_english setText:[_word valueForKey:@"english"]];
     
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
     tapGesture.numberOfTapsRequired = 2;

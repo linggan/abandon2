@@ -30,6 +30,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *helpLabelTwo;
 @property (weak, nonatomic) IBOutlet UILabel *helpLabelThree;
 @property (weak, nonatomic) IBOutlet UILabel *helpLabelFour;
+@property (weak, nonatomic) IBOutlet UILabel *helpLabelFive;
 
 @property (retain, nonatomic) NSManagedObject *word;
 

@@ -13,12 +13,12 @@
 
 @interface VocabExportViewController : UIViewController <UIScrollViewDelegate>
 
-@property (nonatomic, assign) id<CoreDataDelegate> dataDelegate;
 @property (nonatomic, retain) NSArray *wordList;
 @property (nonatomic, retain) NSMutableArray *vocabList;
 @property (nonatomic, retain) NSString *vocabListName;
 
 
 @property (nonatomic, assign) id<ModalViewDelegate> modalDelegate;
+@property (nonatomic, assign) id<CoreDataDelegate> dataDelegate;
 
 @end

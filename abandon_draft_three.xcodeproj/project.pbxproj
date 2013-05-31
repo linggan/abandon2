@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		8362F1BF174560AE007BD369 /* CGCViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8362F1B5174560AE007BD369 /* CGCViewController.m */; };
-		8362F1C0174560AE007BD369 /* CGCViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8362F1B6174560AE007BD369 /* CGCViewController.xib */; };
 		C40D568B1746E49800E50797 /* decompDB.txt in Resources */ = {isa = PBXBuildFile; fileRef = C40D568A1746E49800E50797 /* decompDB.txt */; };
 		C42DECA1173647B2008EAD0F /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = C42DECA0173647B1008EAD0F /* icon.png */; };
 		C42DECA8173649B0008EAD0F /* retinaIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = C42DECA7173649B0008EAD0F /* retinaIcon.png */; };
@@ -123,6 +121,9 @@
 		C4AB3F9C1756990200595A64 /* AnswerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4AB3F9A1756990200595A64 /* AnswerViewController.xib */; };
 		C4AB3FA017569A3600595A64 /* TestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4AB3F9E17569A3600595A64 /* TestViewController.m */; };
 		C4AB3FA117569A3600595A64 /* TestViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4AB3F9F17569A3600595A64 /* TestViewController.xib */; };
+		C4CEF8D2175831AF00460726 /* SmoothLineView.m in Sources */ = {isa = PBXBuildFile; fileRef = C4CEF8D1175831AF00460726 /* SmoothLineView.m */; };
+		C4CEF8E717591F0800460726 /* VocabBreakdownViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4CEF8E517591F0800460726 /* VocabBreakdownViewController.m */; };
+		C4CEF8E817591F0800460726 /* VocabBreakdownViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4CEF8E617591F0800460726 /* VocabBreakdownViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -136,9 +137,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		8362F1B4174560AE007BD369 /* CGCViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGCViewController.h; sourceTree = "<group>"; };
-		8362F1B5174560AE007BD369 /* CGCViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CGCViewController.m; sourceTree = "<group>"; };
-		8362F1B6174560AE007BD369 /* CGCViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CGCViewController.xib; sourceTree = "<group>"; };
 		C40D568A1746E49800E50797 /* decompDB.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = decompDB.txt; sourceTree = "<group>"; };
 		C42DECA0173647B1008EAD0F /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
 		C42DECA3173647C4008EAD0F /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
@@ -324,6 +322,11 @@
 		C4AB3F9D17569A3600595A64 /* TestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestViewController.h; sourceTree = "<group>"; };
 		C4AB3F9E17569A3600595A64 /* TestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestViewController.m; sourceTree = "<group>"; };
 		C4AB3F9F17569A3600595A64 /* TestViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TestViewController.xib; sourceTree = "<group>"; };
+		C4CEF8D0175831AF00460726 /* SmoothLineView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SmoothLineView.h; sourceTree = "<group>"; };
+		C4CEF8D1175831AF00460726 /* SmoothLineView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SmoothLineView.m; sourceTree = "<group>"; };
+		C4CEF8E417591F0700460726 /* VocabBreakdownViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VocabBreakdownViewController.h; sourceTree = "<group>"; };
+		C4CEF8E517591F0800460726 /* VocabBreakdownViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VocabBreakdownViewController.m; sourceTree = "<group>"; };
+		C4CEF8E617591F0800460726 /* VocabBreakdownViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VocabBreakdownViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -397,7 +400,7 @@
 		C468BA971734EAA300253DC0 /* abandon_draft_three */ = {
 			isa = PBXGroup;
 			children = (
-				C4A02F2317374309002191CD /* Carl's Part */,
+				C4A02F2317374309002191CD /* Drawing */,
 				C42DECAF17364FF0008EAD0F /* background.png */,
 				C468BC571735F20A00253DC0 /* CoreDataEntities */,
 				C468BBF717358B5800253DC0 /* ExternalLibraries */,
@@ -477,6 +480,9 @@
 				C47876F717553CE600ABE22A /* VocabViewController.h */,
 				C47876F817553CE600ABE22A /* VocabViewController.m */,
 				C47876F917553CE600ABE22A /* VocabViewController.xib */,
+				C4CEF8E417591F0700460726 /* VocabBreakdownViewController.h */,
+				C4CEF8E517591F0800460726 /* VocabBreakdownViewController.m */,
+				C4CEF8E617591F0800460726 /* VocabBreakdownViewController.xib */,
 				C468BB571734F47200253DC0 /* VocabExportViewController.h */,
 				C468BB581734F47200253DC0 /* VocabExportViewController.m */,
 				C468BB591734F47200253DC0 /* VocabExportViewController.xib */,
@@ -561,6 +567,8 @@
 		C468BBF717358B5800253DC0 /* ExternalLibraries */ = {
 			isa = PBXGroup;
 			children = (
+				C4CEF8D0175831AF00460726 /* SmoothLineView.h */,
+				C4CEF8D1175831AF00460726 /* SmoothLineView.m */,
 				C4A02E9C1736E76F002191CD /* REMenu */,
 				C468BBF817358B6D00253DC0 /* MagicalRecord */,
 				C468BBC317358A1400253DC0 /* MGBox */,
@@ -703,12 +711,9 @@
 			path = REMenu;
 			sourceTree = "<group>";
 		};
-		C4A02F2317374309002191CD /* Carl's Part */ = {
+		C4A02F2317374309002191CD /* Drawing */ = {
 			isa = PBXGroup;
 			children = (
-				8362F1B4174560AE007BD369 /* CGCViewController.h */,
-				8362F1B5174560AE007BD369 /* CGCViewController.m */,
-				8362F1B6174560AE007BD369 /* CGCViewController.xib */,
 				C4AB3F981756990200595A64 /* AnswerViewController.h */,
 				C4AB3F991756990200595A64 /* AnswerViewController.m */,
 				C4AB3F9A1756990200595A64 /* AnswerViewController.xib */,
@@ -716,7 +721,7 @@
 				C4AB3F9E17569A3600595A64 /* TestViewController.m */,
 				C4AB3F9F17569A3600595A64 /* TestViewController.xib */,
 			);
-			name = "Carl's Part";
+			name = Drawing;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -807,11 +812,11 @@
 				C42DECB017364FF0008EAD0F /* background.png in Resources */,
 				C4975E0317432DDB003287C4 /* radicalListWithMeaning.txt in Resources */,
 				C4873A93174442FB00665ABA /* CharacterBreakdownViewController.xib in Resources */,
-				8362F1C0174560AE007BD369 /* CGCViewController.xib in Resources */,
 				C40D568B1746E49800E50797 /* decompDB.txt in Resources */,
 				C47876FB17553CE600ABE22A /* VocabViewController.xib in Resources */,
 				C4AB3F9C1756990200595A64 /* AnswerViewController.xib in Resources */,
 				C4AB3FA117569A3600595A64 /* TestViewController.xib in Resources */,
+				C4CEF8E817591F0800460726 /* VocabBreakdownViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -920,11 +925,11 @@
 				C4975DD41742C4AF003287C4 /* DictEntry.m in Sources */,
 				C4975E0617432E4F003287C4 /* RadicalEntry.m in Sources */,
 				C4873A92174442FB00665ABA /* CharacterBreakdownViewController.m in Sources */,
-				8362F1BF174560AE007BD369 /* CGCViewController.m in Sources */,
 				C47876FA17553CE600ABE22A /* VocabViewController.m in Sources */,
 				C47876FE17555A9500ABE22A /* VocabList.m in Sources */,
 				C4AB3F9B1756990200595A64 /* AnswerViewController.m in Sources */,
 				C4AB3FA017569A3600595A64 /* TestViewController.m in Sources */,
+				C4CEF8E717591F0800460726 /* VocabBreakdownViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -934,6 +939,7 @@
 			files = (
 				C468BAC11734EAA400253DC0 /* abandon_draft_threeTests.m in Sources */,
 				C468BC5E1736254800253DC0 /* CoreDataTestHelper.m in Sources */,
+				C4CEF8D2175831AF00460726 /* SmoothLineView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

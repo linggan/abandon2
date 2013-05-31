@@ -8,6 +8,7 @@
 
 #import "VocabViewController.h"
 #import "VocabExportViewController.h"
+#import "VocabBreakdownViewController.h"
 #import "MGScrollView.h"
 #import "MGTableBoxStyled.h"
 #import "MGLineStyled.h"
@@ -17,7 +18,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+        
     _vocabLists = [[self dataDelegate] getAllVocabLists];
     
     MGScrollView *scroller = [MGScrollView scrollerWithSize:self.view.bounds.size];
@@ -26,10 +27,10 @@
     MGTableBoxStyled *topSection = MGTableBoxStyled.box;
     [scroller.boxes addObject:topSection];
 
-    MGLineStyled *topRow = [MGLineStyled lineWithLeft:@"Export new vocab list" right:@"" size:(CGSize){304, 40}];
+    MGLineStyled *topRow = [MGLineStyled lineWithLeft:@"Make new vocab list" right:@"" size:(CGSize){304, 40}];
+    [topRow setBackgroundColor:[UIColor colorWithRed:(float)255/255 green:(float)101/255 blue:(float)136/255 alpha:1]];
     [topRow setFont:[UIFont fontWithName:@"Futura-CondensedMedium" size:18]];
     topRow.onTap = ^{
-        
         
         UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"New Vocab List" message:@"Give it a nice name, yeah?" delegate:self cancelButtonTitle:@"Nah" otherButtonTitles:@"Okay", nil];
         alert.alertViewStyle = UIAlertViewStylePlainTextInput;
@@ -50,6 +51,14 @@
         MGLineStyled *row = [MGLineStyled lineWithLeft:[list valueForKey:@"name"]
                                                   right:@"" size:(CGSize){304, 40}];
         [row setFont:[UIFont fontWithName:@"Futura-CondensedMedium" size:18]];
+        row.onTap = ^{
+            VocabBreakdownViewController *controller = [[VocabBreakdownViewController alloc] init];
+            [controller setVocabList:list];
+            
+            [[self navigationController] pushViewController:controller animated:YES];
+
+
+        };
         [section.topLines addObject:row];
         
     }
@@ -79,7 +88,8 @@
         controller.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
         [controller setVocabListName:[[alertView textFieldAtIndex:0] text]];
 
-        [self presentViewController:controller animated:YES completion:NULL];
+        [[self navigationController] pushViewController:controller animated:YES];
+        //[self presentViewController:controller animated:YES completion:NULL];
     }
 }
 

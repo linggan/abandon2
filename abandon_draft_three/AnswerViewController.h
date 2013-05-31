@@ -8,10 +8,14 @@
 
 #import <UIKit/UIKit.h>
 #import "ModalViewDelegate.h"
+#import "Word.h"
 
 @interface AnswerViewController : UIViewController <UIGestureRecognizerDelegate>
+@property (weak, nonatomic) IBOutlet UIImageView *userAnswer;
 @property (weak, nonatomic) IBOutlet UILabel *answer;
-@property (strong, nonatomic) NSString *text;
+@property (weak, nonatomic) IBOutlet UILabel *pinyin;
+@property (weak, nonatomic) IBOutlet UILabel *english;
+@property (strong, nonatomic) Word *word;
 @property (nonatomic, assign) id<ModalViewDelegate> modalDelegate;
 
 @end

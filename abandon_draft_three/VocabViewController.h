@@ -9,10 +9,10 @@
 #import <UIKit/UIKit.h>
 #import "CoreDataDelegate.h"
 #import "ModalViewDelegate.h"
+#import <AVFoundation/AVFoundation.h>
+
 
 @interface VocabViewController : UIViewController <UIScrollViewDelegate, ModalViewDelegate>
-
 @property (nonatomic, assign) id<CoreDataDelegate> dataDelegate;
 @property (nonatomic, retain) NSArray *vocabLists;
-
 @end

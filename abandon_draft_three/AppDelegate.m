@@ -444,8 +444,8 @@
     VocabList *newList = [VocabList MR_createEntity];
     [newList setValue:name forKey:@"name"];
     [newList setValue:URLstring forKey:@"recordingURL"];
-    NSMutableSet *wordSet = [VocabList mutableSetValueForKey:@"wordsInList"];
-    //[wordSet addObjectsFromArray:wordArray];
+    NSMutableSet *wordSet = [newList mutableSetValueForKey:@"wordsInList"];
+    [wordSet addObjectsFromArray:wordArray];
     
     [self saveContext];
 }

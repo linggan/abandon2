@@ -110,6 +110,7 @@
         [_English setText:@"all done!"];
         [_recordBtn setTitle:@"all done!" forState:UIControlStateNormal];
         [[self navigationController] popViewControllerAnimated:YES];
+        [[self modalDelegate] didDismissPresentedViewController];
         
     }
 }
